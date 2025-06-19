@@ -197,3 +197,12 @@ body {
   transform-origin: 14px 14px; /* center */
   transition: transform 0.15s linear;
 }
+@keyframes bounce {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.4); }
+}
+
+.active-marker {
+  animation: bounce 0.6s ease-in-out infinite;
+  transform-origin: center center;
+}
