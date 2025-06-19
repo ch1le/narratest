@@ -1,4 +1,4 @@
-/* App.js: Mobile Orientation HUD – driving route with bounce, click activation, and tags from JSON */
+/* App.js: Mobile Orientation HUD – driving route with bounce, click activation, and propagated tags repositioned */
 
 /* ---------- helpers ---------- */
 const $        = sel => document.querySelector(sel);
@@ -53,10 +53,11 @@ Promise.all([
   })
 ]).then(([json]) => {
   DATA = json;
+  // use tags from JSON directly, no random override
   permissionText.textContent = json.permissionMessage.replace(/\n/g, "\n");
 });
 
-/* ---------- tag toggle ---------- */
+/* ---------- selector tag toggle ---------- */
 selectorRow.addEventListener("click", e => {
   if (e.target.classList.contains("tag"))
     e.target.classList.toggle("deselected");
@@ -112,7 +113,6 @@ function haversine(lat1, lon1, lat2, lon2) {
   const a = Math.sin(dφ/2)**2 + Math.cos(φ1)*Math.cos(φ2)*Math.sin(dλ/2)**2;
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
-
 function bearing(lat1, lon1, lat2, lon2) {
   const y = Math.sin(toRad(lon2 - lon1)) * Math.cos(toRad(lat2));
   const x = Math.cos(toRad(lat1)) * Math.sin(toRad(lat2)) -
@@ -147,7 +147,7 @@ function pickTargets() {
   showTarget(first);
 }
 
-/* ---------- show target + routing ---------- */
+/* ---------- show target + driving route ---------- */
 function showTarget(t) {
   titleText.textContent = t.name;
 
