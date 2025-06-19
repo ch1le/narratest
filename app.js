@@ -154,17 +154,19 @@ function pickTargets() {
 /* ---------- display one target + driving route ---------- */
 function showTarget(t) {
   titleText.textContent = t.name;
-  // display propagated tag under title
-  let tagEl = document.getElementById('titleTag');
-  if (!tagEl) {
-    tagEl = document.createElement('span');
-    tagEl.id = 'titleTag';
-    tagEl.className = 'tag';
-    titleText.parentNode.appendChild(tagEl);
-  }
-  tagEl.textContent = t.tag;
-  tagEl.dataset.tag = t.tag;
-  tagEl.classList.remove('deselected');
+  // display propagated tag beneath the title widget
+let tagEl = document.getElementById('titleTag');
+const titleWidget = document.getElementById('titleWidget');
+if (!tagEl) {
+  tagEl = document.createElement('span');
+  tagEl.id = 'titleTag';
+  tagEl.className = 'tag';
+  // insert after the titleWidget div, so it sits below
+  titleWidget.insertAdjacentElement('afterend', tagEl);
+}
+tagEl.textContent = t.tag;
+tagEl.dataset.tag = t.tag;
+tagEl.classList.remove('deselected' );('deselected');
 
   descBox.textContent   = t.desc;
   descBox.style.opacity = "1";
