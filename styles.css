@@ -29,7 +29,7 @@ body {
   cursor: pointer;
   user-select: none;
   transition: all 0.2s ease;
-  background: #000; /* selected */
+  background: #000; /* default = selected  */
   color: #fff;
 }
 
@@ -38,37 +38,23 @@ body {
   color: #000;
 }
 
-/* ---------- Map container ---------- */
-#map {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 50vh;
-  z-index: 4;
-}
-
 /* ---------- Header ---------- */
 #headerBar {
   position: fixed;
-  /* position above description: 50vh + gap - header height */
-  top: calc(50vh + 8px - 60px);
+  top: 48px; /* below selector row */
   left: 16px;
   right: 16px;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.85),
-    rgba(255, 255, 255, 0)
-  );
-  padding: 4px 16px;
-  border-radius: 4px;
+flex-direction: column;
+  align-items: flex-start; /* so things line up to the left */;
   z-index: 10;
 }
 
-/* Title widget inside header */
+#titleTag {
+  margin-top: 4px; /* spacing between the title row and the tag */
+}
+
+/* title widget */
 #titleWidget {
   display: flex;
   align-items: center;
@@ -76,21 +62,11 @@ body {
   max-width: 70%;
 }
 
-/* Propagated tag under headerBar */
-#titleTag {
-  margin-top: 4px;
-}
-
 #bookmark {
   width: 24px;
   height: 24px;
   fill: #000;
   display: none;
-}
-
-#bookmark.bookmark-selected path {
-  fill: #000;
-  stroke: #000;
 }
 
 #titleText {
@@ -113,14 +89,17 @@ body {
   display: none;
   animation: spin 0.8s linear infinite;
 }
+
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-/* ---------- Description box ---------- */
+/* description box */
 #descBox {
   position: fixed;
-  top: calc(50vh + 8px);
+  top: calc(48px + 90px);
   left: 16px;
   right: 16px;
   font-size: 20px;
@@ -129,22 +108,111 @@ body {
   transition: opacity 0.4s ease;
   max-height: 60vh;
   overflow: auto;
-  z-index: 5;
 }
 
-/* ---------- Bounce animation for active marker ---------- */
-@keyframes bounce {
-  0%, 100% { transform: scale(1); }
-  50%      { transform: scale(1.01); }
+/* ---------- Cross HUD ---------- */
+#crossHUD {
+  position: relative;
+  width: 70px;
+  height: 70px;
+  margin-left: auto;
 }
-.active-marker {
-  animation: bounce 0.6s ease-in-out infinite;
+
+.arrow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 46px;
+  height: 6px;
+  background: #000;
+  border-radius: 3px;
   transform-origin: center center;
+  display: flex;
+  align-items: center;
 }
 
-/* ---------- Compass Icon ---------- */
+.arrow::after {
+  content: "";
+  position: absolute;
+  right: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border: 4px solid transparent;
+  border-left-color: #000;
+}
+
+#activeVert {
+  background: #ff3b3b;
+}
+
+#activeVert::after {
+  border-left-color: #ff3b3b;
+}
+
+/* overshoot animation for object arrow */
+@keyframes objSpin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  70% {
+    transform: translate(-50%, -50%) rotate(-95deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(-75deg);
+  }
+}
+
+.animateObj {
+  animation: objSpin 0.9s cubic-bezier(0.36, 1.6, 0.6, 1) forwards;
+}
+
+/* ---------- Permission prompt ---------- */
+#permissionBox {
+  position: fixed;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 230px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  z-index: 20;
+}
+
+#permissionText {
+  text-align: center;
+  font-size: 14px;
+  line-height: 24px;
+}
+
+#enable {
+  padding: 10px 18px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  background: #000;
+  color: #fff;
+  cursor: pointer;
+}
 .compass-icon svg {
   overflow: visible;
   transform-origin: 14px 14px; /* center */
   transition: transform 0.15s linear;
+}
+@keyframes bounce {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.04); }
+}
+
+.active-marker {
+  animation: bounce 0.6s ease-in-out infinite;
+  transform-origin: center center;
+}
+/* push the title/bookmark bar down to sit just above the description */
+#headerBar {
+  /* instead of a fixed pixel top, position relative to the 50vh map */
+  top: calc(50vh + 0px - 60px); /* 8px is the descBox gap; 40px is approx headerBar height */
 }
