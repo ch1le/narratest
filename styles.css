@@ -212,13 +212,4 @@ body {
   top: calc(50vh + 8px - 40px); /* 8px is the descBox gap; 40px is approx headerBar height */
 }
 
-/* subtle white gradient behind the header to improve legibility */
-#headerBar {
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.85),
-    rgba(255, 255, 255, 0)
-  );
-  padding: 4px 16px;  /* add a little padding so the gradient shows */
-  border-radius: 4px;
-}
+
