@@ -24,21 +24,16 @@ const TARGET_COLOR  = "#ff9500";
 const COMPASS_COLOR = "#0066ff";
 
 /* ---------- state ---------- */
-let DATA = null,
-    map,
-    userLat,
-    userLon,
-    initialAlpha = null;
-let liveTargets = [],
-    currentLabel = "";
-let compassMarker = null,
-    routeControl  = null;
+let DATA = null;
+let map, userLat, userLon, initialAlpha = null;
+let liveTargets = [], currentLabel = "";
+let compassMarker = null, routeControl = null;
 
 /* ---------- load content + mock location ---------- */
 Promise.all([
   fetch("content.json").then(r => r.json()),
   new Promise(res => {
-    const USE_MOCK = true;            // set false for real GPS
+    const USE_MOCK = true; // set false for real GPS
     if (USE_MOCK) {
       userLat = 58.377679;
       userLon = 26.717398;
@@ -91,7 +86,7 @@ function addCompassMarker() {
       </svg>
     </div>`;
   compassMarker = L.marker([userLat, userLon], {
-    icon: L.divIcon({ className: "", html, iconSize: [28,28], iconAnchor: [14,14] })
+    icon: L.divIcon({ className: "", html, iconSize: [28, 28], iconAnchor: [14, 14] })
   }).addTo(map);
 }
 
@@ -108,9 +103,10 @@ function haversine(lat1, lon1, lat2, lon2) {
   const R = 6371e3;
   const φ1 = toRad(lat1), φ2 = toRad(lat2);
   const dφ = toRad(lat2 - lat1), dλ = toRad(lon2 - lon1);
-  const a = Math.sin(dφ/2)**2 + Math.cos(φ1)*Math.cos(φ2)*Math.sin(dλ/2)**2;
+  const a = Math.sin(dφ/2) ** 2 + Math.cos(φ1) * Math.cos(φ2) * Math.sin(dλ/2) ** 2;
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
+
 function bearing(lat1, lon1, lat2, lon2) {
   const y = Math.sin(toRad(lon2 - lon1)) * Math.cos(toRad(lat2));
   const x = Math.cos(toRad(lat1)) * Math.sin(toRad(lat2)) -
@@ -128,16 +124,17 @@ function pickTargets() {
 
   const first = list[0];
   const spokes = [norm(first.bear + SPOKE_ANGLE), norm(first.bear - SPOKE_ANGLE)];
-  const pick = dir => list
-    .filter(t => Math.abs(shortest(dir, t.bear)) < SPOKE_TOL)
-    .sort((a, b) => a.dist - b.dist)[0];
+
+  const pick = dir =>
+    list.filter(t => Math.abs(shortest(dir, t.bear)) < SPOKE_TOL)
+        .sort((a, b) => a.dist - b.dist)[0];
 
   const second = pick(spokes[0]);
   const third  = pick(spokes[1]);
   liveTargets = [first, second, third].filter(Boolean);
 
   const markers = liveTargets.map(t =>
-    L.circleMarker([t.lat, t.lon], { radius:6, color:TARGET_COLOR, weight:1, fillOpacity:1 })
+    L.circleMarker([t.lat, t.lon], { radius: 6, color: TARGET_COLOR, weight: 1, fillOpacity: 1 })
       .addTo(map)
       .bindTooltip(t.name)
   );
@@ -166,9 +163,8 @@ function showTarget(t) {
       showAlternatives: false,
       show: false
     }).addTo(map);
-    document
-      .querySelectorAll(".leaflet-routing-container")
-      .forEach(el => (el.style.display = "none"));
+
+    document.querySelectorAll(".leaflet-routing-container").forEach(el => el.style.display = "none");
   }
 }
 
@@ -179,7 +175,7 @@ function handleOrientation({ alpha = 0 }) {
   if (initialAlpha === null) initialAlpha = alpha;
 
   const heading = norm(initialAlpha - alpha); // CW positive
-  const svg     = compassMarker.getElement().querySelector("svg");
+  const svg = compassMarker.getElement().querySelector("svg");
   svg.style.transform = `rotate(${heading}deg)`;
 
   liveTargets.forEach(t => {
@@ -190,6 +186,4 @@ function handleOrientation({ alpha = 0 }) {
 }
 
 /* ---------- bookmark toggle ---------- */
-bookmark.addEventListener("click", () =>
-  bookmark.classList.toggle("bookmark-selected")
-);
+bookmark.addEventListener("click", () => bookmark.classList.toggle("bookmark-selected"));
