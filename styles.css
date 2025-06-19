@@ -209,7 +209,7 @@ body {
 /* push the title/bookmark bar down to sit just above the description */
 #headerBar {
   /* instead of a fixed pixel top, position relative to the 50vh map */
-  top: calc(50vh + 0px - 40px); /* 8px is the descBox gap; 40px is approx headerBar height */
+  top: calc(50vh + 0px - 60px); /* 8px is the descBox gap; 40px is approx headerBar height */
 }
 
 
