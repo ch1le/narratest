@@ -70,6 +70,7 @@ selectorRow.addEventListener("click", e => {
 /* ---------- permission ---------- */
 enableBtn.addEventListener("click", startPresent);
 
+/* ---------- start presentation ---------- */
 function startPresent() {
   permissionBox.remove();
   buildMap();
@@ -79,7 +80,7 @@ function startPresent() {
   window.addEventListener("deviceorientation", handleOrientation);
 }
 
-/* ---------- map ---------- */
+/* ---------- map setup ---------- */
 function buildMap() {
   map = L.map("map", { zoomControl: false, attributionControl: false })
         .setView([userLat, userLon], 14);
@@ -108,7 +109,7 @@ function introVisuals() {
   titleText.style.opacity = "1";
 }
 
-/* ---------- math ---------- */
+/* ---------- math functions ---------- */
 function haversine(lat1, lon1, lat2, lon2) {
   const R = 6371e3;
   const φ1 = toRad(lat1), φ2 = toRad(lat2);
@@ -116,14 +117,15 @@ function haversine(lat1, lon1, lat2, lon2) {
   const a = Math.sin(dφ/2)**2 + Math.cos(φ1)*Math.cos(φ2)*Math.sin(dλ/2)**2;
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
+
 function bearing(lat1, lon1, lat2, lon2) {
-  const y = Math.sin(toRad(lon2 - lon1)) * Math.cos(toRad(la2));
+  const y = Math.sin(toRad(lon2 - lon1)) * Math.cos(toRad(lat2));
   const x = Math.cos(toRad(lat1)) * Math.sin(toRad(lat2)) -
             Math.sin(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.cos(toRad(lon2 - lon1));
   return norm(Math.atan2(y, x) * 180 / Math.PI);
 }
 
-/* ---------- pick 3 Y-targets ---------- */
+/* ---------- pick 3 targets (Y pattern) ---------- */
 function pickTargets() {
   const list = DATA.targets.map(t => ({
     ...t,
@@ -140,17 +142,17 @@ function pickTargets() {
   const third  = pick(spokes[1]);
   liveTargets = [first, second, third].filter(Boolean);
 
-  liveMarkers = liveTargets.map(t => {
-    return L.circleMarker([t.lat, t.lon], { radius:6, color:TARGET_COLOR, weight:1, fillOpacity:1 })
+  liveMarkers = liveTargets.map(t =>
+    L.circleMarker([t.lat, t.lon], { radius:6, color:TARGET_COLOR, weight:1, fillOpacity:1 })
       .addTo(map)
-      .on('click', () => showTarget(t));
-  });
+      .on('click', () => showTarget(t))
+  );
 
   map.fitBounds(L.featureGroup(liveMarkers).getBounds().pad(0.125));
   showTarget(first);
 }
 
-/* ---------- display one target + driving route ---------- */
+/* ---------- show target + routing ---------- */
 function showTarget(t) {
   titleText.textContent = t.name;
 
@@ -173,16 +175,14 @@ function showTarget(t) {
 
   // bounce animation for active marker
   liveMarkers.forEach(m => {
-    const el = m.getElement();
-    if (el) el.classList.remove('active-marker');
+    const el = m.getElement(); if (el) el.classList.remove('active-marker');
   });
   const activeMarker = liveMarkers.find(m => {
     const { lat, lng } = m.getLatLng();
     return lat === t.lat && lng === t.lon;
   });
   if (activeMarker) {
-    const el = activeMarker.getElement();
-    if (el) el.classList.add('active-marker');
+    const el = activeMarker.getElement(); if (el) el.classList.add('active-marker');
   }
 
   if (routeControl) {
@@ -202,7 +202,7 @@ function showTarget(t) {
   }
 }
 
-/* ---------- orientation handler ---------- */
+/* ---------- orientation ---------- */
 function handleOrientation({ alpha = 0 }) {
   if (!DATA) return;
   alpha = norm(alpha);
