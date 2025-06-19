@@ -151,13 +151,15 @@ function pickTargets() {
 function showTarget(t) {
   titleText.textContent = t.name;
 
-  // display tag from JSON just above the description
+  // display tag from JSON inside description box
   let tagEl = document.getElementById('titleTag');
   if (!tagEl) {
     tagEl = document.createElement('span');
     tagEl.id = 'titleTag';
     tagEl.className = 'tag';
-    descBox.insertAdjacentElement('beforebegin', tagEl);
+    tagEl.style.display = 'block';
+    tagEl.style.marginBottom = '8px';
+    descBox.insertAdjacentElement('afterbegin', tagEl);
   }
   tagEl.textContent = t.tag;
   tagEl.dataset.tag = t.tag;
