@@ -1,4 +1,4 @@
-/* Mobile Orientation HUD – driving route version with bounce, click activation, and propagated tags */
+/* Mobile Orientation HUD – driving route version with bounce, click activation, and hardcoded tags */
 
 /* ---------- helpers ---------- */
 const $        = sel => document.querySelector(sel);
@@ -53,11 +53,6 @@ Promise.all([
   })
 ]).then(([json]) => {
   DATA = json;
-  // propagate random tags from selectorRow to targets
-  const tags = Array.from(document.querySelectorAll('#selectorRow .tag')).map(el => el.dataset.tag);
-  DATA.targets.forEach(t => {
-    t.tag = tags[Math.floor(Math.random() * tags.length)];
-  });
   permissionText.textContent = json.permissionMessage.replace(/\n/g, "\n");
 });
 
@@ -117,7 +112,7 @@ function haversine(lat1, lon1, lat2, lon2) {
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 function bearing(lat1, lon1, lat2, lon2) {
-  const y = Math.sin(toRad(lon2 - lon1)) * Math.cos(toRad(lat2));
+  const y = Math.sin(toRad(lon2 - lon1)) * Math.cos(toRad(la2));
   const x = Math.cos(toRad(lat1)) * Math.sin(toRad(lat2)) -
             Math.sin(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.cos(toRad(lon2 - lon1));
   return norm(Math.atan2(y, x) * 180 / Math.PI);
@@ -154,7 +149,7 @@ function pickTargets() {
 /* ---------- display one target + driving route ---------- */
 function showTarget(t) {
   titleText.textContent = t.name;
-  // display propagated tag under title
+  // display hardcoded tag under title
   let tagEl = document.getElementById('titleTag');
   if (!tagEl) {
     tagEl = document.createElement('span');
@@ -170,7 +165,6 @@ function showTarget(t) {
   descBox.style.opacity = "1";
   currentLabel          = t.name;
 
-  // bounce animation for active marker
   liveMarkers.forEach(m => {
     const el = m.getElement();
     if (el) el.classList.remove('active-marker');
