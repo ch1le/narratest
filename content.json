@@ -1,0 +1,695 @@
+{
+  "permissionMessage": "Hey!\\nTo give you accurate\\ndescriptions and locations\\nof interesting things, we need to know your location.\\nThis is no different than opening Google Maps.",
+  "targets": [
+    {
+      "name": "Minu ajastu sümbolid",
+      "desc": "Edgar Tedresaare loodud teos kahest presidendist - Lennart Meri ja Toomas Hendrik Ilves sillapostidel. Kurikuulsaks said portreed siis, kui ühel ööl tekkis Ilvese pea asemele Venemaa presidendi Vladimir Putini oma, mis pärast meediakära kaeti Guy Fawkesi maskiga. Lõpuks otsustas linn sekkuda ning praegu näeb sillapostidel lisaks Lennart Meri portreele vaid halli ristkülikut, mis katab kirjeldatut. ***Two presidents – Lennart Meri and Toomas Hendrik Ilves – on bridge pillars by Edgar Tedresaar. The portraits became notorious when one night Ilves's head was replaced with the head of Vladimir Putin, the president of Russia. After much media attention the head was covered with a Guy Fawkes mask and eventually the city decided to intervene, resulting in the grey rectangle opposite the portrait of president Meri. #stencibility2015 http://www.seitsmesed.ee/meelelahutus/uudis/2015/05/05/toomas-hendrik-ilvesest-sai-uleoo-vladimir-putin/",
+      "lat": 58.3706083,
+      "lon": 26.7413878
+    },
+    {
+      "name": "MTO \"Ms Reet\"",
+      "desc": "Prantsuse tänavakunstniku MTO fotorealistlik teos \"Ms Reet\" kaitseb majas asuvat väikest esoteerikapoodi suurte kaubanduskeskuste eest, mis aja jooksul vallutavad kogu kesklinna. #stencibility 2014\n\nThe photorealistic mural \"Ms Reet\" by the French street artist MTO shields a small esoteric shop operating in the building from large shopping centers that are taking over the city center. #stencibility 2014\n\nwww.flickr.com/mto-graff",
+      "lat": 58.37603,
+      "lon": 26.728642
+    },
+    {
+      "name": "Live fast, die young",
+      "desc": "Noor ema imetab last heroilises Madonna-lapsega motiivis, õla peale tatoveeritud \"live fast, die young\" #minajalydia #stencil\n\nA young mother with a shoulder tattoo \"live fast, die young\" nurses her infant in the heroic Madonna and child motif. #minajalydia #stencil",
+      "lat": 58.382184,
+      "lon": 26.722733
+    },
+    {
+      "name": "Kannahabe ja Nõiakütt",
+      "desc": "Politseinik Nõia Kütt arreteerib Sammalhabet, kelle pikas habemes kasvab kanep. Kohtumaja vastas asuvat tööd võib tõlgendada kui kommentaari praeguste liiga karmide narkoseaduste kohta. #edwardvonlõngus #stencil\n\nPolice man Witch Hunter is arresting Sammalhabe with cannabis growing in his long beard („Moss Beard” a famous Estonian fictional children's character). Situated across the Supreme Court, the piece can be interpreted as a commentary on the current strict drug policy. #edwardvonlõngus #stencil",
+      "lat": 58.3790821,
+      "lon": 26.7162421
+    },
+    {
+      "name": "Alasti keiser",
+      "desc": "Vabariigi aastapäeval tekkinud stencil, mis autori Edward von Lõnguse sõnul on pühendatud kõigile keisritele, kes on suutnud veenda valijaid oma üli(k)konna ülimuslikkuses, ning rahvale, kes mängu kaasa teeb.\n\nA stencil that appeared on the day of the Anniversary of the Republic and according to the author Edward von Lõngus it is dedicated to all the emperors who have managed to convince the voters of the supremacy of their clothes and to all the people who play along.",
+      "lat": 58.377332,
+      "lon": 26.7220022
+    },
+    {
+      "name": "Full solar is in our reach",
+      "desc": "Hulljulgelt kõrgel asuv 5m suurune tänavakunsti töö katlamaja korstna peal, mis propageerib päikeseenergia kasutamist. Making of: https://www.youtube.com/watch?v=SU27qvCXlvk",
+      "lat": 58.372856,
+      "lon": 26.7382872
+    },
+    {
+      "name": "Stencibility \"Minu esimene sein\"",
+      "desc": "Stencibility kavandikonkursi \"Minu esimene sein\" pind, mille töö vahetub igal aastal.",
+      "lat": 58.3684604,
+      "lon": 26.733647
+    },
+    {
+      "name": "Kas nüüd on kunst?",
+      "desc": "Tartus juba aastaid rahulikult seinal seisnud, aga Tallinnas väga palju kõneainet tekitanud (http://pluss.postimees.ee/3148733/alasti-keisri-pildi-asemele-tekkis-majaseinale-natuurmort) MinaJaLydia stencil aastast 2007, mil on kujutatud natüürmorti koos tekstiga \"kas nüüd on kunst?\". + Stina Leeki Silmlill & anonüümne Bomb\n\nA stencil by MinaJaLydia from 2007 has been peacefully here in Tartu for years, but has caused much debate in Tallinn, depicts a still life along with the line „Is it art now?” + Stina Leek`s Eyeflower & anonymous bomb",
+      "lat": 58.38211,
+      "lon": 26.714373
+    },
+    {
+      "name": "Alliku autoportree",
+      "desc": "Stencil-koopia Peeter Alliku linoollõikest \"Autoportree\". Valminud gümnaasiumiõpilastega läbiviidud töötoas koostöös Stencibility ja Tartu Kunstimajaga.\n\nStencil copy of Peeter Allik's linocut \"Self-portrait\". Result of a workshop involving high school students in cooperation between Stencibility and Tartu Art House.",
+      "lat": 58.3751781,
+      "lon": 26.7207912
+    },
+    {
+      "name": "No siempre es ver para creer",
+      "desc": "Tšiilist pärit kunstniku Izak One töö pealkirjaga \"Seeing isn't always believing\" *** A piece by Chilean artist Izak One titled Seeing isn't always believing. #stencibility2015 http://izakone.blogspot.com",
+      "lat": 58.3721302,
+      "lon": 26.7294949
+    },
+    {
+      "name": "Vabaduse Galerii",
+      "desc": "Mõlemal pool Vabaduse silda on alates 2010 aastast suur isetekkeline tänavakunstiteoste kogum, mis täieneb aegamisi ning mida on hakatud nimetama Vabaduse Galeriiks või Tartu Linnagaleriiks.\n\n2013 suvel otsustas Tartu Linnavalitsus sillaluse puhastada, kuid valikuliselt- jättes \"ilusa\" alles. (http://www.tartupostimees.ee/1244980/soodapritsimehed-valivad-kunsti)\n\nGallery at Vabaduse Bridge (Freedom Gallery)\nOn the both sides of Vabaduse (Freedom) Bridge there spans a large spontaneous mass of street art works, gradually developing. It has come to be known as the Freedom Galley or Tartu City Gallery.",
+      "lat": 58.385389,
+      "lon": 26.72419
+    },
+    {
+      "name": "Vabaduse Galerii",
+      "desc": "Mõlemal pool Vabaduse silda on suur isetekkeline tänavakunstiteoste kogum, mis täieneb aegamisi ning mida on hakatud nimetama Vabaduse Galeriiks või Tartu Linnagaleriiks.\n\n2013 suvel otsustas Tartu Linnavalitsus sillaluse puhastada, kuid valikuliselt- jättes \"ilusa\" alles. http://www.tartupostimees.ee/1244980/soodapritsimehed-valivad-kunsti\n\nGallery at Vabaduse Bridge (Freedom Gallery)\nOn the both sides of Vabaduse (Freedom) Bridge there spans a large spontaneous mass of street art works, gradually developing. It has come to be known as the Freedom Galley or Tartu City Gallery.",
+      "lat": 58.384921,
+      "lon": 26.723581
+    },
+    {
+      "name": "Salme kultuurimaja",
+      "desc": "Väike majake Salme tänava alguses, mis meenutab Hansu ja Grete muinasjuttu tänu Mimiko ja Kairo lisandustele.\n\nA little house in the beginning of Salme street with a Hansel and Gretel atmosphere thanks to works by Mimiko and Kairo.",
+      "lat": 58.3713398,
+      "lon": 26.7295164
+    },
+    {
+      "name": "Anton Hansen Tammsaare",
+      "desc": "Edward von Lõnguse versioon Anton Hansen Tammsaarest, kes on jäänud töötuks pärast koondamist 25 krooni rahatähe pealt, kui Eestis euro käibele võeti. Tekkis tänavatele koos Koidulaga (http://evl-genius.blogspot.com/2011/02/blog-post.html).\n\nKoidula ja Tammsaare teos lõuendil püstitas 2012a kevadel Tartu noore kunsti oksjonil rekordi saavutades lõpphinnaks 1200 eurot. (http://evl-genius.blogspot.com/2013/05/oksjonirekord.html\n\nEdward von Lõngus' version of Anton Hansen Tammsaare, a classic in Estonian literature, who has become unemployed after being laid off from the 25 kroon note, along with the coming of euro notes.",
+      "lat": 58.381579,
+      "lon": 26.723223
+    },
+    {
+      "name": "Lydia Koidula",
+      "desc": "Edward von Lõnguse versioon Lydia Koidulast, kes on jäänud töötuks pärast koondamist 100 krooni rahatähe pealt, kui Eestis euro käibele võeti. Tekkis tänavatele koos Tammsaarega (http://evl-genius.blogspot.com/2011/02/blog-post.html)\n\nKoidula ja Tammsaare teos lõuendil püstitas 2012a kevadel Tartu noore kunsti oksjonil rekordi saavutades lõpphinnaks 1200 eurot. (http://evl-genius.blogspot.com/2013/05/oksjonirekord.html)\n\nYet another classic from the 100 kroon note sharing the fate of Tammsaare.",
+      "lat": 58.3809826,
+      "lon": 26.7243847
+    },
+    {
+      "name": "Pingid",
+      "desc": "Edward von Lõnguse poolt elavdatud pingid Tartu Linnaraamatukogu ees.\n\nhttp://evl-genius.blogspot.com/2013/04/tartu-pm-tanavakunstnik-kaunistas.html",
+      "lat": 58.381528,
+      "lon": 26.723406
+    },
+    {
+      "name": "Muster",
+      "desc": "Hiigelsuur muster elumaja seinal, mis on sama kirev kui Karlova ise #TAF #stencil\n\nGiant pattern on the wall of a house as varied as Karlova area itself. #TAF #stencil",
+      "lat": 58.367719,
+      "lon": 26.7312008
+    },
+    {
+      "name": "Multistab",
+      "desc": "Tallinna- põhise rühmituse Multistab suurteos, mis sündis 2011. a Stencibility tänavakunstifestivalil.\nwww.multistab.ee.\n.\nA Tallinn-based crew Multistab for Stencibility 2011.\nwww.multistab.ee",
+      "lat": 58.367061,
+      "lon": 26.721121
+    },
+    {
+      "name": "Kashink",
+      "desc": "Prantsusmaalt pärit tänavakunstniku Kashink'i poolt tehtud teos 2013. aasta Stencibility tänavakunstifestivalil. Autori enda sõnul räägib pilt eestlaste suitsukalalembusest.\nwww.kashink.com\n\nKashink from France for Stencibility 2013. According to the author the piece talks about the love Estonians have for smoked fish.\n\nwww.kashink.com",
+      "lat": 58.367207,
+      "lon": 26.721105
+    },
+    {
+      "name": "Thobek & Rudens",
+      "desc": "Lätlaste Thobek'i ja Rudens'i töö Võru tänaval, mis kolmanda teosena jätkab eelmistel Stencibility festivalidel alustatud nn. tänavakunsti kvartalit. Aastase vahega täiendas oma kurikuulsa karakteriga kolleegide tööd Läti tänavakunsti pahapoiss Kiwie.\n\nA piece from Latvian guys Thobek and Rudens that continues the tradition to add something here on every Stencibility festival.",
+      "lat": 58.367373,
+      "lon": 26.721116
+    },
+    {
+      "name": "Võru tänava galerii",
+      "desc": "Lisaks festivali ajal tehtud töödele, on seinale tekkinud ka väga ilusaid omaalgatuslikke stencleid. Ümber nurga on ka Eesti Hiphop Festivali mural.\n\nIn addition to Stencibility festival works one can find lots of beautiful stencils made by personal initiative. There's a mural for Estonian Hiphop festival around the corner.",
+      "lat": 58.366916,
+      "lon": 26.721116
+    },
+    {
+      "name": "Backbone'i tagune",
+      "desc": "Siit hoovist leiab huvitava assortii Pintsli, Hapniku, Sänki ja Medley töödest.\n\nThis court yard behind Backbone tattoo salon hosts an interesting collection of works by Pintsel, Hapnik, Sänk and Medley.",
+      "lat": 58.386785,
+      "lon": 26.727915
+    },
+    {
+      "name": "Sirp",
+      "desc": "Ajalehest Sirp volditud laevuke, mida näeb vaid mõõna ajal. #edwardvonlõngus\n\nA boat folded from the culture newspaper Sirp, the stencil is only seen at low tide. #edwardvonlõngus",
+      "lat": 58.3847138,
+      "lon": 26.7236584
+    },
+    {
+      "name": "Emajõe veemõõtja",
+      "desc": "Vabaduse silla all seisab poiss keda on näha täpselt nii palju, kui Emajõgi teda näitab. #hapnik\n\nThere's a boy standing under the Freedom Bridge who you can see as much the river Emajõgi let's you. #hapnik #water_measurer",
+      "lat": 58.3853086,
+      "lon": 26.7241225
+    },
+    {
+      "name": "err:)r",
+      "desc": "Katkine naerunägu räägib kunstniku sõnul sellest, kuidas jube raske on teha ilusat nägu, kui tegelikult on koodis viga – visuaal on tekkinud pildifaili katkisest, moondunud koodist.\n\nThe fragmented smiley face is about the fact that it is awfully difficult to put on a happy face when there is an error in the code, according to the author MinaJaLydia. The artwork has been created based on the broken, deformed code of the image file.",
+      "lat": 58.373646,
+      "lon": 26.724694
+    },
+    {
+      "name": "@ Kairo's",
+      "desc": "Legendi kohaselt elab Kairo kuskil siin läheduses ning sellepärast leiab siit ka palju tema töid.\n\nLegend has it that Kairo's habitat is somewhere near, which explains why so many of her works are scattered around the area.",
+      "lat": 58.3865627,
+      "lon": 26.7121062
+    },
+    {
+      "name": "Spagetid ja ussid",
+      "desc": "Putuktoiduline Kairo demonstreerib oma einetaldrikut. #toidupropaganda\n\nBug-eating Kairo demonstrating her dinner plate with spaghetti and worms. #foodpropaganda",
+      "lat": 58.3665374,
+      "lon": 26.7296398
+    },
+    {
+      "name": "Maasikas Kairo moodi",
+      "desc": "Isuäratav maasikas kirjul elektrikapil koos mõne ettearvamatu lisandiga.\n\nA colourful electricity cabinet displaying a mouth watering strawberry with an unexpected ingredient.",
+      "lat": 58.3860228,
+      "lon": 26.7115563
+    },
+    {
+      "name": "\"Hüva õied\"",
+      "desc": "Supilinna päevade ajal maalitud Kairo tetraptühhon on autori sõnul sõnamäng Baudelaire'i raamatuga \"Kurja õied\" ning viitab helgele elule ja trikster Erkki Hüvale.\n\nA tetraptychon \"The Flowers of Good\" by Kairo painted during the festival of the city district of Supilinn; according to the author it is a word play on Baudelaire's The Flowers of Evil and a reference to a brighter life and also to a local trickster named Erkki Hüva (Erkki Good).",
+      "lat": 58.384042,
+      "lon": 26.716859
+    },
+    {
+      "name": "\"Õed\"",
+      "desc": "#kairo #akrüliiti #acryliti",
+      "lat": 58.3880249,
+      "lon": 26.7151639
+    },
+    {
+      "name": "Radioaktiivne supelrand",
+      "desc": "Isegi poid ei pääse kontekstualiseerimisest.\n#müra2000 (http://mra2000.carbonmade.com/)\n\nEven the buoys can't escape from contextualizing\n#müra2000 (http://mra2000.carbonmade.com/)",
+      "lat": 58.392682,
+      "lon": 26.709609
+    },
+    {
+      "name": "Edgar Allan Poe",
+      "desc": "Sõnamäng Poe tänaval : Edgar Allan Poe portree.\n\nMihhail Lotmani lemmik (http://www.lotman.ee/1/post/2011/09/tnavamaalid-ja-graffiti-tartus.html\n\nA wordplay on Poe (Shop's) Street : a portrait of Edgar Allan Poe.",
+      "lat": 58.379337,
+      "lon": 26.723345
+    },
+    {
+      "name": "Please let me love something else than money",
+      "desc": "Üks vanimaid siiani säilinud tänavakunstitöid Tartus. Selle sotsiaalkriitilise töö autor on Soome kunstnik Tiitus Petäjäniemi.\n\nOne of the oldest surviving street art works in Tartu. The author of the socially critical work is a Finnish artist named Tiitus Petäjäniemi.\n\n http://tiituspetajaniemi.blogspot.com",
+      "lat": 58.3828874,
+      "lon": 26.719351
+    },
+    {
+      "name": "Predaator",
+      "desc": "Üks kuulsatest tulnukküttide rassi esindajatest jälgimas kõiki Riia tänal liiklejaid kõrgelt-kõrgelt. #edwardvonlõngus #stencil\n\nA specimen of the famous alien race of hunters watching the traffic from up high on Riia street. #edwardvonlõngus #stencil\n\nhttp://evl-genius.blogspot.com",
+      "lat": 58.375191,
+      "lon": 26.723707
+    },
+    {
+      "name": "Facter Loomingu rõdul",
+      "desc": "Hosteli Looming rõdule on jätnud endast märgi Stencibility tänavakunstifestivali sõber Austraalia tänavakunstnik Facter.\n\n.https://www.facebook.com/facter",
+      "lat": 58.371784,
+      "lon": 26.714247
+    },
+    {
+      "name": "Genialistide Klubi",
+      "desc": "Subkultuurimaja ees ja sees leidub päris huvitavat kraami, isegi wc seinte jaoks on eraldi kuraator. Treppide juures on 2012. aasta Stencibilityl valminud Satinka teos.\n\nThere's a lot of interesting stuff in and outside of the subculture house, even the toilet walls have its own curator. By the stairs there is a work made by Satinka at 2012 year Stencibility.",
+      "lat": 58.3835263,
+      "lon": 26.7219887
+    },
+    {
+      "name": "Magasini tänav",
+      "desc": "Aja jooksul on piki Magasini tänavat tekkinud ilus kollaaž erinevatest stenclitest, kleepsudest, plakatitest, grafitist, tag'idest.",
+      "lat": 58.383066,
+      "lon": 26.721539
+    },
+    {
+      "name": "Tallinn on parem kui Tartu",
+      "desc": "Väga kõnekas provokatiivne stencil tekstiga \"Tallinn on parem kui Tartu\", mis jääb muuhulgas silma ka oma tehnilise oskamatuse poolest",
+      "lat": 58.381041,
+      "lon": 26.7245784
+    },
+    {
+      "name": "Shape your own reality",
+      "desc": "#Kala from Kuressaare",
+      "lat": 58.370839,
+      "lon": 26.729275
+    },
+    {
+      "name": "Punkrock zombies",
+      "desc": "Üks vanimatest siiamaani säilinud Tartu grafititest. Joonistatud 1990ndate alguses.\n\nOne of the oldest surviving graffiti works in Tartu. Drawn in the beginning of 1990s.",
+      "lat": 58.372605,
+      "lon": 26.737706
+    },
+    {
+      "name": "Sõpruse sild",
+      "desc": "Sillaalune, kus pea iga posti pealt leiab silmailu.\n\nAn area under the bridge where almost every pillar offers some eye candy.",
+      "lat": 58.371343,
+      "lon": 26.742997
+    },
+    {
+      "name": "Hallid Härrad",
+      "desc": "2011. a Stencibility tänavakunstifestivalil tehtud ühistöö, mille karakterid põhinevad lasteraamatu Momo illustratsioonidel. Tegemist on Hallide Härradega, kes varastavad inimeste aega väites, et nad on pankurid ja investeerivad seda. Samuti on näha ajaga hädas olevat Märtsijänest loost Alice Imedemaalt.",
+      "lat": 58.376102,
+      "lon": 26.721679
+    },
+    {
+      "name": "Mull",
+      "desc": "Väga kohaspetsiifiline töö MinaJaLydialt - stseen mulli sees on pärit täpselt sellelt samalt tänavanurgalt, kus elektrikapp stencliga asub.\n\nA very site specific work by MinaJaLydia – the scene within the bubble is from the very same street corner where the electricity cabinet stands.\n\nminajalydia.tumblr.com",
+      "lat": 58.369311,
+      "lon": 26.732365
+    },
+    {
+      "name": "Südameasi",
+      "desc": "Stencil, mis avab Lõnguse pehmemat poolt.\n\nStencil that shows the softer side of Edward von Lõngus.",
+      "lat": 58.38486,
+      "lon": 26.709732
+    },
+    {
+      "name": "Identiteet",
+      "desc": "Anonüümsed mustad siluetid lahkamaks tänavakunstnike identiteedi- probleemi.\n+ Rodo Dodo ja muud tegelased\n\nAnonymous black silhouettes by Edward von Lõngus dealing with identity issues facing street artists. + Rodo Dodo & others\n\nhttp://evl-genius.blogspot.com",
+      "lat": 58.376817,
+      "lon": 26.707914
+    },
+    {
+      "name": "tüdrik",
+      "desc": "TAF-i koostöö COSH-ga.",
+      "lat": 58.3876158,
+      "lon": 26.6928184
+    },
+    {
+      "name": "Thobek",
+      "desc": "Töö nimega \"Half Andrey\" Läti tänavakunstnikult Thobek.\n\nA piece \"Half Andrey\" by Thobek, a street artist from Latvia.",
+      "lat": 58.38316,
+      "lon": 26.733786
+    },
+    {
+      "name": "Satinka",
+      "desc": "Jõe-äärne stencil Satinkalt (http://satinka0.tumblr.com/)",
+      "lat": 58.393796,
+      "lon": 26.709459
+    },
+    {
+      "name": "Päeva Galerii",
+      "desc": "Koht, mis oli enne Vabaduse silla ehitamist tänavakunstnike meelispaik. Praegu on jäänud sinna suur kogu stencleid, aga erinevalt Vabaduse Galeriist ei ole ekspositsioon uuenenud enam aastaid.\n \nA favourite spot of the street artists before the construction of the Vabaduse (Freedom) Bridge. Presently it showcases a fairly large stencil collection, although unlike the Freedom Gallery the exhibition here has not been updated for years.",
+      "lat": 58.373098,
+      "lon": 26.727912
+    },
+    {
+      "name": "Maja Toomel",
+      "desc": "Valge mahajäetud pisemat sorti hoone on aegade jooksul hoolsalt täiendust saanud. #biigtussulaav",
+      "lat": 58.3786703,
+      "lon": 26.714716
+    },
+    {
+      "name": "Vincent",
+      "desc": "Väga detailne fotorealistlik stencil MinaJaLydia inimeste seeriast. Mehe tätoveeringut lähedalt uurides leiab palju huvitavaid viiteid.\n\nA highly detailed photorealistic stencil from the people series by MinaJaLydia. There are many interesting references when you take a closer look at the man's tattoos.\nhttp://minajalydia.tumblr.com",
+      "lat": 58.364602,
+      "lon": 26.740052
+    },
+    {
+      "name": "Mahajäetud maja. / An abondoned building",
+      "desc": "Nagu ka teised omaniku hooleta jäänud hooned, kattub ka see vaikselt kultuurikihiga.",
+      "lat": 58.381783,
+      "lon": 26.713686
+    },
+    {
+      "name": "Magdaleena puhkusel",
+      "desc": "http://minajalydia.tumblr.com",
+      "lat": 58.38835,
+      "lon": 26.708635
+    },
+    {
+      "name": "Anna Haava",
+      "desc": "Emakeelepäev 2016 – SirLudvig",
+      "lat": 58.3783143,
+      "lon": 26.7047945
+    },
+    {
+      "name": "Hapnik \"Tolstoi ja Gandhi\"",
+      "desc": "Kas teadsid, et Lev Tolstoi ja Gandhi olid omavahel kirjavahetuses? Tehtud Stencibility 2017 raames.",
+      "lat": 58.3693507,
+      "lon": 26.7329848
+    },
+    {
+      "name": "Hapnik maja nurgas",
+      "desc": "Töö ilmus maja nurgale üleöö ja on tänini kohalike poolt palavalt armastatud.",
+      "lat": 58.3698055,
+      "lon": 26.7280034
+    },
+    {
+      "name": "MINAROTT",
+      "desc": "MINAROTT\nSINAROTT\nMEIE EI OLE ROTID\nROTID EI OLE MEIE",
+      "lat": 58.3834867,
+      "lon": 26.7194656
+    },
+    {
+      "name": "Taimed",
+      "desc": "Krempel kohviku hoovis",
+      "lat": 58.3815851,
+      "lon": 26.7213121
+    },
+    {
+      "name": "Supilinna kassid",
+      "desc": "Kunstnik: Maria Evestus\nKassi fotod: Helen rae",
+      "lat": 58.3852618,
+      "lon": 26.7164369
+    },
+    {
+      "name": "Kogum",
+      "desc": "Erinevad autorid",
+      "lat": 58.3861804,
+      "lon": 26.7206927
+    },
+    {
+      "name": "Kummitus ja seenmees",
+      "desc": "Mis riideid te seal Tallinnas kannate?",
+      "lat": 58.3862223,
+      "lon": 26.7187556
+    },
+    {
+      "name": "Suve tõotus",
+      "desc": "Niisiis ma tõotasin endale, et kavatsen järgmise suve veeta nagu see oleks mu viimane siin elus",
+      "lat": 58.3742899,
+      "lon": 26.7057406
+    },
+    {
+      "name": "Kogum",
+      "desc": "Erinevad kunstnikud",
+      "lat": 58.3848761,
+      "lon": 26.7250409
+    },
+    {
+      "name": "On aeg",
+      "desc": "On aeg katkestada T-vibratsioon ja visata külmetatud siil oma kitsast voodist välja",
+      "lat": 58.3762153,
+      "lon": 26.6980346
+    },
+    {
+      "name": "Psühhoteek",
+      "desc": "Teostus: Hapnik",
+      "lat": 58.3761779,
+      "lon": 26.7218073
+    },
+    {
+      "name": "Lõikuskuul",
+      "desc": "Eduard Rüga Lõikuskuul 1975\nTeostus: Sprayprinter",
+      "lat": 58.3737422,
+      "lon": 26.7240755
+    },
+    {
+      "name": "LEGO20",
+      "desc": "Kavand: Helen Marie Välja",
+      "lat": 58.3741103,
+      "lon": 26.7312041
+    },
+    {
+      "name": "Nimetu",
+      "desc": "Anastasia Papaleonida & Seikon",
+      "lat": 58.3761765,
+      "lon": 26.7180765
+    },
+    {
+      "name": "Minu % selles kunstis",
+      "desc": "Minu % selles kunstis",
+      "lat": 58.3796776,
+      "lon": 26.7307367
+    },
+    {
+      "name": "Käppadele kukkuv kass",
+      "desc": "Kavand: Kudrun Vungi\nTeostus: Mihkel Joala, Kerttu Kuslap, Robot AI-Bert\n23",
+      "lat": 58.3825857,
+      "lon": 26.7282762
+    },
+    {
+      "name": "Supilinn 15",
+      "desc": "Poola kunstnike Sepe ja Chazme maalitud suur mural \"Supilinn 15\" ühendab Tartu ja Poola kultuuriruumi. Seinamaaling on inspireeritud kahe 20. sajandi alguses Tartus sündinud Poola kunstniku loomingust – arhitekt Jerzy Hryniewiecki kuulsast Spodek hoonest Poolas ja maalikunstnik Bronisław Linke väga tuntud ja nüüdseks juba märgiliseks saanud maalist “Autobus”. *** A large mural called Supilinn 15 created by Polish artists Sepe and Chazme connects the cultures of Poland and Tartu. The mural is inspired by the works of two Polish artists born in Tartu in the beginning of the 20th century. One is the famous Spodek building created by architect Jerzy Hryniewiecki (among others) and the other is a well-known painting titled Autobus by painter Bronisław Linke that has become quite symbolic.",
+      "lat": 58.3851666,
+      "lon": 26.709837
+    },
+    {
+      "name": "Kairo",
+      "desc": "Aasta: 2020",
+      "lat": 58.3827105,
+      "lon": 26.7133688
+    },
+    {
+      "name": "Looduse armastajad",
+      "desc": "Looduse armastajad/ Nature lovers",
+      "lat": 58.3645715,
+      "lon": 26.7393129
+    },
+    {
+      "name": "Alasti rand",
+      "desc": "Alasti rand/ Naked beach",
+      "lat": 58.3934614,
+      "lon": 26.7096803
+    },
+    {
+      "name": "Auto",
+      "desc": "Auto/ Car",
+      "lat": 58.3646186,
+      "lon": 26.7309465
+    },
+    {
+      "name": "Kodu",
+      "desc": "Kodu/ Home",
+      "lat": 58.3945451,
+      "lon": 26.7189764
+    },
+    {
+      "name": "Olümpia",
+      "desc": "Olümpia/ Olympics",
+      "lat": 58.3716289,
+      "lon": 26.7256981
+    },
+    {
+      "name": "Koostöö",
+      "desc": "Koostöö/ Collab",
+      "lat": 58.3938902,
+      "lon": 26.7160934
+    },
+    {
+      "name": "Rattasõit",
+      "desc": "Rattasõit/Bikeride",
+      "lat": 58.3778408,
+      "lon": 26.7241161
+    },
+    {
+      "name": "Koos koos koos",
+      "desc": "Koos koos koos/ All together now",
+      "lat": 58.3890376,
+      "lon": 26.7328345
+    },
+    {
+      "name": "Lõvi hüpe",
+      "desc": "Lõvi hüpe/ Lion jump",
+      "lat": 58.3900784,
+      "lon": 26.7270812
+    },
+    {
+      "name": "Abstraktsioon",
+      "desc": "Abstraktsioon/Abstraction",
+      "lat": 58.3724225,
+      "lon": 26.7210425
+    },
+    {
+      "name": "Kvaliteetaeg 2",
+      "desc": "Kvaliteetaeg 2/Quality time 2",
+      "lat": 58.369619,
+      "lon": 26.7275308
+    },
+    {
+      "name": "Kvaliteetaeg",
+      "desc": "Kvaliteetaeg/ Quality time",
+      "lat": 58.3829765,
+      "lon": 26.7093639
+    },
+    {
+      "name": "Fotosüntees",
+      "desc": "Fotosüntees/ Photosynthesis",
+      "lat": 58.3627544,
+      "lon": 26.7300983
+    },
+    {
+      "name": "Tume unenägu",
+      "desc": "Tume unenägu/ Dark dream",
+      "lat": 58.3861549,
+      "lon": 26.7210449
+    },
+    {
+      "name": "Haiguste ravi. Kontrollitud.",
+      "desc": "Ülo Kiple mälestuseks",
+      "lat": 58.3828717,
+      "lon": 26.7386687
+    },
+    {
+      "name": "Thobek & Kashink",
+      "desc": "Dialoog kahe tänavakunstniku vahel, kes pole füüsiliselt ise kunagi kohtunud - Lätist pärit Thobek ja Prantsusmaalt pärit Kashink. NB! Tööd enam ei ole",
+      "lat": 58.3780907,
+      "lon": 26.7196673
+    },
+    {
+      "name": "Maharajadhiraj Maharaja...",
+      "desc": "... Mahimahendra Maharao Raja Sri Sir Umed Singhji II Sahib Bahadur. NB! Tööd enam ei ole\n\nminajalydia.tumblr.com",
+      "lat": 58.366785,
+      "lon": 26.72552
+    },
+    {
+      "name": "Tartu Waimud",
+      "desc": "2021a\nAutor?",
+      "lat": 58.3672017,
+      "lon": 26.7220107
+    },
+    {
+      "name": "Mosaiiklinnud",
+      "desc": "Kaks mosaiiklindu demonstreerivad uhkesti õrrel istudes Tartu tänavakunsti tehnilist mitmekesisust.\n\nTwo mosaic birds sitting proud on their perch demonstrate the technical diversity of Tartu street art.",
+      "lat": 58.370335,
+      "lon": 26.730187
+    },
+    {
+      "name": "Harajuku kaksikud",
+      "desc": "Jaapanist pärit harajuku subkultuuri esindavad kaksikud, kes autori sõnul sümboliseerivad kunstniku MinaJaLydia topeltidentiteeti http://minajalydia.tumblr.com\n\nHarajuku twins famous within the Japanese pop-culture symbolize the double identity of artist MinaJaLydia. http://minajalydia.tumblr.com",
+      "lat": 58.360313,
+      "lon": 26.7211102
+    },
+    {
+      "name": "Ouroboros",
+      "desc": "2012. aasta Stencibility tänavakunstifestivalil valminud teos \"Ouroboros\", mis kujutab lõputut lohe, kes sööb iseenda saba. Sobib seetõttu ideaalselt Väikse Tähetorni ümarale hoonele.",
+      "lat": 58.3792076,
+      "lon": 26.719721
+    },
+    {
+      "name": "Käpiknukk mehe ja elevandiga",
+      "desc": "Väga detailne fotorealistlik stencil MinaJaLydia inimeste seeriast. http://minajalydia.tumblr.com",
+      "lat": 58.37624,
+      "lon": 26.722301
+    },
+    {
+      "name": "Okeiko & Hypnobooster",
+      "desc": "2013. aasta Stencibility tänavakunstifestivalil kahe Tallinna- põhise kunstniku Okeiko ja Hypnoboosteri koostöös valminud seinamaaling.\n\nwww.facebook.com/PlanetOkeiko",
+      "lat": 58.377919,
+      "lon": 26.720579
+    },
+    {
+      "name": "Kaseke",
+      "desc": "Endine Kasekese pood, mis nagu ka teised omaniku hooleta jäänud hooned, kattub kultuurikihiga.\n\nFormer shop called Kaseke, that has accumulated layers of culture similarly to other abandoned buildings.",
+      "lat": 58.37051,
+      "lon": 26.727183
+    },
+    {
+      "name": "Stencil semiootikutelt",
+      "desc": "Palju *märke* sisaldav töö Tartu Ülikooli semiootikaosakonna endisest lähedusest. Üleval vasakus nurgas Juri Lotmani ninaga mees.\n\nA work filled with signs near the vicinity of the former Semiotics Department of the University of Taru. A man in the top left corner has Juri Lotman's nose.",
+      "lat": 58.374012,
+      "lon": 26.711741
+    },
+    {
+      "name": "Eurosent",
+      "desc": "Nagu lähedalasuv tekst plangul, on seegi ilmselt mõeldud suhtlema kõrvaloleva Töötukassa kontoriga.\n\nMuch like the sign on the fence this work is meant as a communicative act with the nearby unemployment office.",
+      "lat": 58.372715,
+      "lon": 26.708987
+    },
+    {
+      "name": "Pargi saun",
+      "desc": "Vana saunahoone, mille pealt leiab sõnumeid seinast seina.\n\nAn old sauna building displaying messages of all shapes and sizes.",
+      "lat": 58.371025,
+      "lon": 26.727888
+    },
+    {
+      "name": "KOOD",
+      "desc": "Üks paljudest MinaJaLydia koodidest linnapildis. Kood jätkub teisel hoonel. Selle lahendamise spikker on siin: http://www.ascii.cl/htmlcodes.htm",
+      "lat": 58.376108,
+      "lon": 26.719952
+    },
+    {
+      "name": "Maja",
+      "desc": "Lõnguse ownitud mahajäetud maja Marja tänaval.\n\nAn abandoned house on Marja street pwned by Edward von Lõngus.",
+      "lat": 58.387687,
+      "lon": 26.713938
+    },
+    {
+      "name": "Hapnik",
+      "desc": "Peaaegu kogu Hapniku (http://hapnik.blogspot.com/) portfoolio Loomemajanduskeskuse taga",
+      "lat": 58.374561,
+      "lon": 26.728299
+    },
+    {
+      "name": "Käsna-Kalle",
+      "desc": "Kellele suvaline kollane kapp, kellele Käsna-Kalle.",
+      "lat": 58.378445,
+      "lon": 26.706144
+    },
+    {
+      "name": "Pintsel",
+      "desc": "Tallinna-põhine Pintsel on Tartut külastanud",
+      "lat": 58.3799821,
+      "lon": 26.719214
+    },
+    {
+      "name": "Kairo",
+      "desc": "Kairo maalitud pilt erineb enamusest Tartus leitavast tänavakunstist selle tõttu, et on tehtud klassikalisele maalile iseloomuliku akrüülvärvi ja pintsliga, mitte spreivärvidega. #akrüliiti\nwww.kairo.ee",
+      "lat": 58.387475,
+      "lon": 26.715864
+    },
+    {
+      "name": "Linnuparv",
+      "desc": "– SirLudvig",
+      "lat": 58.3836438,
+      "lon": 26.7175671
+    },
+    {
+      "name": "Alberti ulmemehed / Albert's sci-fi men",
+      "desc": "MinaJaLydia (http://minajalydia.tumblr.com) loomingu üks esimesi töid.",
+      "lat": 58.382402,
+      "lon": 26.722795
+    },
+    {
+      "name": "Elumeretuuker",
+      "desc": "Elumeretuuker legendaarse baari Zavood ees.",
+      "lat": 58.383595,
+      "lon": 26.719549
+    },
+    {
+      "name": "Miski pole olulisem",
+      "desc": "Sein, kus ilutses kaua aega tekst \"Miski pole olulisem, kui see lause\". ACTA seaduseelnõu vastase aktina \"tsenseeris\" Edward von Lõngus selle teksti, millest tekkis suur sõnavõtt ja diskussioon. Paar päeva hiljem tekkis alla uuesti tekst \"Miski pole olulisem, kui see lause\" lisalausega \"lootust on\"\n\nhttps://www.youtube.com/watch?v=ErexnKuwam8",
+      "lat": 58.3811535,
+      "lon": 26.723468
+    },
+    {
+      "name": "Jõeema",
+      "desc": "Tänu tänavakunstifestivalile Sõnum Seinal päevavalgust näinud töö \"Jõeema\"",
+      "lat": 58.3790941,
+      "lon": 26.7303492
+    },
+    {
+      "name": "Sillaalune lennuliiklus",
+      "desc": "Lennuliiklust reguleeriv liiklusmärk, mis on olnud selle koha peal nii kaua, et keegi ei märkagi, et midagi valesti oleks. #müra2000\n\nObservant passers-by may notice an unorthodox traffic sign. #müra2000 https://mra2000.carbonmade.com/",
+      "lat": 58.386508,
+      "lon": 26.722183
+    },
+    {
+      "name": "Salvador Dali",
+      "desc": "Autor Hapnik (http://hapnik.blogspot.com/2011/05/salvador-is-watching.html)",
+      "lat": 58.3832185,
+      "lon": 26.7207509
+    },
+    {
+      "name": "Silt Töötukassa juures",
+      "desc": "Neid löövate kirjanduslike tsitaatidega silte, mis on tokiga maasse löödud või plankudele kruvitud, leiab Tartust mõnikümmend. Kuna nende asukoht muutub tihti, ei saa kõiki neid kaardile panna. See silt Töötukassa juures aga on väga visa: seda kruvitakse järjepidevalt uuesti sama koha peale tagasi, kui vahepeal kaduma on läinud.\n \nIn Tartu there are dozens of signs bearing literary quotes such as this. Since their locations keep changing they can't all be put on the map. However this particular sign near the unemployment office is very resilient, whenever one goes missing a new one pops up.",
+      "lat": 58.3730998,
+      "lon": 26.7087799
+    },
+    {
+      "name": "Noor Putin",
+      "desc": "All you need is love! #vonbomb #youngputin",
+      "lat": 58.3742738,
+      "lon": 26.7227358
+    },
+    {
+      "name": "Multistab ninakollid",
+      "desc": "Multistabi standartselt suur teos nõuab lähemalt vaatamiseks kahjuks aiaületust.\n\nA sizable work as it is customary with Multistab, but unfortunately in order to be viewed a fence needs to be crossed.\n\nhttp://multistab.ee/",
+      "lat": 58.3774297,
+      "lon": 26.6986012
+    }
+  ]
+}
