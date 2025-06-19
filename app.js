@@ -1,4 +1,4 @@
-/* Mobile Orientation HUD – default driving route version with bounce and click activation */
+/* Mobile Orientation HUD – driving route version with bounce, click activation, and hardcoded tags */
 
 /* ---------- helpers ---------- */
 const $        = sel => document.querySelector(sel);
@@ -108,12 +108,11 @@ function haversine(lat1, lon1, lat2, lon2) {
   const R = 6371e3;
   const φ1 = toRad(lat1), φ2 = toRad(lat2);
   const dφ = toRad(lat2 - lat1), dλ = toRad(lon2 - lon1);
-  const a = Math.sin(dφ/2)**2 +
-            Math.cos(φ1)*Math.cos(φ2)*Math.sin(dλ/2)**2;
+  const a = Math.sin(dφ/2)**2 + Math.cos(φ1)*Math.cos(φ2)*Math.sin(dλ/2)**2;
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 function bearing(lat1, lon1, lat2, lon2) {
-  const y = Math.sin(toRad(lon2 - lon1)) * Math.cos(toRad(lat2));
+  const y = Math.sin(toRad(lon2 - lon1)) * Math.cos(toRad(la2));
   const x = Math.cos(toRad(lat1)) * Math.sin(toRad(lat2)) -
             Math.sin(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.cos(toRad(lon2 - lon1));
   return norm(Math.atan2(y, x) * 180 / Math.PI);
@@ -136,12 +135,9 @@ function pickTargets() {
   const third  = pick(spokes[1]);
   liveTargets = [first, second, third].filter(Boolean);
 
-  // create markers, remove tooltip, add click handler, store
   liveMarkers = liveTargets.map(t => {
     const marker = L.circleMarker([t.lat, t.lon], { radius:6, color:TARGET_COLOR, weight:1, fillOpacity:1 })
       .addTo(map)
-      .off('mouseover')
-      .off('click')
       .on('click', () => showTarget(t));
     return marker;
   });
@@ -150,14 +146,25 @@ function pickTargets() {
   showTarget(first);
 }
 
-/* ---------- display one target + default driving route ---------- */
+/* ---------- display one target + driving route ---------- */
 function showTarget(t) {
   titleText.textContent = t.name;
+  // display hardcoded tag under title
+  let tagEl = document.getElementById('titleTag');
+  if (!tagEl) {
+    tagEl = document.createElement('span');
+    tagEl.id = 'titleTag';
+    tagEl.className = 'tag';
+    titleText.parentNode.appendChild(tagEl);
+  }
+  tagEl.textContent = t.tag;
+  tagEl.dataset.tag = t.tag;
+  tagEl.classList.remove('deselected');
+
   descBox.textContent   = t.desc;
   descBox.style.opacity = "1";
   currentLabel          = t.name;
 
-  // bounce animation for active marker
   liveMarkers.forEach(m => {
     const el = m.getElement();
     if (el) el.classList.remove('active-marker');
@@ -194,7 +201,7 @@ function handleOrientation({ alpha = 0 }) {
   alpha = norm(alpha);
   if (initialAlpha === null) initialAlpha = alpha;
 
-  const heading = norm(initialAlpha - alpha); // CW positive
+  const heading = norm(initialAlpha - alpha);
   const svg = compassMarker.getElement().querySelector("svg");
   svg.style.transform = `rotate(${heading}deg)`;
 
