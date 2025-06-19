@@ -1,10 +1,10 @@
-/* Mobile Orientation HUD – default driving route version */
+/* Mobile Orientation HUD – default driving route version with bounce animation */
 
 /* ---------- helpers ---------- */
 const $        = sel => document.querySelector(sel);
 const norm     = d   => (d % 360 + 360) % 360;
 const toRad    = d   => d * Math.PI / 180;
-const shortest = (a,b) => ((a-b+540) % 360) - 180;
+const shortest = (a,b) => ((a - b + 540) % 360) - 180;
 
 /* ---------- DOM refs ---------- */
 const enableBtn      = $("#enable");
@@ -24,10 +24,16 @@ const TARGET_COLOR  = "#ff9500";
 const COMPASS_COLOR = "#0066ff";
 
 /* ---------- state ---------- */
-let DATA = null;
-let map, userLat, userLon, initialAlpha = null;
-let liveTargets = [], currentLabel = "";
-let compassMarker = null, routeControl = null;
+let DATA = null,
+    map,
+    userLat,
+    userLon,
+    initialAlpha = null;
+let liveTargets = [],
+    liveMarkers = [],
+    currentLabel = "";
+let compassMarker = null,
+    routeControl  = null;
 
 /* ---------- load content + mock location ---------- */
 Promise.all([
@@ -40,7 +46,7 @@ Promise.all([
       res();
     } else {
       navigator.geolocation.getCurrentPosition(
-        ({coords}) => { userLat = coords.latitude; userLon = coords.longitude; res(); },
+        ({ coords }) => { userLat = coords.latitude; userLon = coords.longitude; res(); },
         err => alert(err.message)
       );
     }
@@ -52,9 +58,8 @@ Promise.all([
 
 /* ---------- tag toggle ---------- */
 selectorRow.addEventListener("click", e => {
-  if (e.target.classList.contains("tag")) {
+  if (e.target.classList.contains("tag"))
     e.target.classList.toggle("deselected");
-  }
 });
 
 /* ---------- permission ---------- */
@@ -86,7 +91,7 @@ function addCompassMarker() {
       </svg>
     </div>`;
   compassMarker = L.marker([userLat, userLon], {
-    icon: L.divIcon({ className: "", html, iconSize: [28, 28], iconAnchor: [14, 14] })
+    icon: L.divIcon({ className: "", html, iconSize: [28,28], iconAnchor: [14,14] })
   }).addTo(map);
 }
 
@@ -103,7 +108,8 @@ function haversine(lat1, lon1, lat2, lon2) {
   const R = 6371e3;
   const φ1 = toRad(lat1), φ2 = toRad(lat2);
   const dφ = toRad(lat2 - lat1), dλ = toRad(lon2 - lon1);
-  const a = Math.sin(dφ/2) ** 2 + Math.cos(φ1) * Math.cos(φ2) * Math.sin(dλ/2) ** 2;
+  const a = Math.sin(dφ/2)**2 +
+            Math.cos(φ1)*Math.cos(φ2)*Math.sin(dλ/2)**2;
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
@@ -124,22 +130,21 @@ function pickTargets() {
 
   const first = list[0];
   const spokes = [norm(first.bear + SPOKE_ANGLE), norm(first.bear - SPOKE_ANGLE)];
-
-  const pick = dir =>
-    list.filter(t => Math.abs(shortest(dir, t.bear)) < SPOKE_TOL)
-        .sort((a, b) => a.dist - b.dist)[0];
-
+  const pick = dir => list
+    .filter(t => Math.abs(shortest(dir, t.bear)) < SPOKE_TOL)
+    .sort((a, b) => a.dist - b.dist)[0];
   const second = pick(spokes[0]);
   const third  = pick(spokes[1]);
   liveTargets = [first, second, third].filter(Boolean);
 
-  const markers = liveTargets.map(t =>
-    L.circleMarker([t.lat, t.lon], { radius: 6, color: TARGET_COLOR, weight: 1, fillOpacity: 1 })
+  // create markers and store
+  liveMarkers = liveTargets.map(t =>
+    L.circleMarker([t.lat, t.lon], { radius:6, color:TARGET_COLOR, weight:1, fillOpacity:1 })
       .addTo(map)
       .bindTooltip(t.name)
   );
 
-  map.fitBounds(L.featureGroup(markers).getBounds().pad(0.125));
+  map.fitBounds(L.featureGroup(liveMarkers).getBounds().pad(0.125));
   showTarget(first);
 }
 
@@ -149,6 +154,20 @@ function showTarget(t) {
   descBox.textContent   = t.desc;
   descBox.style.opacity = "1";
   currentLabel          = t.name;
+
+  // bounce animation for active marker
+  liveMarkers.forEach(m => {
+    const el = m.getElement();
+    if (el) el.classList.remove('active-marker');
+  });
+  const activeMarker = liveMarkers.find(m => {
+    const { lat, lng } = m.getLatLng();
+    return lat === t.lat && lng === t.lon;
+  });
+  if (activeMarker) {
+    const el = activeMarker.getElement();
+    if (el) el.classList.add('active-marker');
+  }
 
   if (routeControl) {
     routeControl.setWaypoints([[userLat, userLon], [t.lat, t.lon]]);
@@ -163,7 +182,6 @@ function showTarget(t) {
       showAlternatives: false,
       show: false
     }).addTo(map);
-
     document.querySelectorAll(".leaflet-routing-container").forEach(el => el.style.display = "none");
   }
 }
