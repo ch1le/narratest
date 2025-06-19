@@ -1,4 +1,4 @@
-/* App.js: Mobile Orientation HUD – driving route with bounce, click activation, and propagated tags repositioned */
+/* App.js: Mobile Orientation HUD – driving route with bounce, click activation, and tags from JSON */
 
 /* ---------- helpers ---------- */
 const $        = sel => document.querySelector(sel);
@@ -53,11 +53,6 @@ Promise.all([
   })
 ]).then(([json]) => {
   DATA = json;
-  // propagate random tags from selectorRow to targets
-  const tags = Array.from(document.querySelectorAll('#selectorRow .tag')).map(el => el.dataset.tag);
-  DATA.targets.forEach(t => {
-    t.tag = tags[Math.floor(Math.random() * tags.length)];
-  });
   permissionText.textContent = json.permissionMessage.replace(/\n/g, "\n");
 });
 
@@ -156,7 +151,7 @@ function pickTargets() {
 function showTarget(t) {
   titleText.textContent = t.name;
 
-  // display propagated tag below headerBar
+  // display tag from JSON below headerBar
   let tagEl = document.getElementById('titleTag');
   const headerBar = document.getElementById('headerBar');
   if (!tagEl) {
