@@ -151,14 +151,13 @@ function pickTargets() {
 function showTarget(t) {
   titleText.textContent = t.name;
 
-  // display tag from JSON below headerBar
+  // display tag from JSON just above the description
   let tagEl = document.getElementById('titleTag');
-  const headerBar = document.getElementById('headerBar');
   if (!tagEl) {
     tagEl = document.createElement('span');
     tagEl.id = 'titleTag';
     tagEl.className = 'tag';
-    headerBar.insertAdjacentElement('afterend', tagEl);
+    descBox.insertAdjacentElement('beforebegin', tagEl);
   }
   tagEl.textContent = t.tag;
   tagEl.dataset.tag = t.tag;
