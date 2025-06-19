@@ -1,4 +1,4 @@
-/* Mobile Orientation HUD – default driving route version with bounce animation */
+/* Mobile Orientation HUD – default driving route version with bounce and click activation */
 
 /* ---------- helpers ---------- */
 const $        = sel => document.querySelector(sel);
@@ -20,7 +20,7 @@ const loader         = $("#loader");
 const VIEW_TOL      = 20;
 const SPOKE_TOL     = 25;
 const SPOKE_ANGLE   = 120;
-const TARGET_COLOR  = "#ff9500";
+const TARGET_COLOR  = "#000";      // black markers
 const COMPASS_COLOR = "#0066ff";
 
 /* ---------- state ---------- */
@@ -39,7 +39,7 @@ let compassMarker = null,
 Promise.all([
   fetch("content.json").then(r => r.json()),
   new Promise(res => {
-    const USE_MOCK = true; // set false for real GPS
+    const USE_MOCK = true;
     if (USE_MOCK) {
       userLat = 58.377679;
       userLon = 26.717398;
@@ -112,7 +112,6 @@ function haversine(lat1, lon1, lat2, lon2) {
             Math.cos(φ1)*Math.cos(φ2)*Math.sin(dλ/2)**2;
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
-
 function bearing(lat1, lon1, lat2, lon2) {
   const y = Math.sin(toRad(lon2 - lon1)) * Math.cos(toRad(lat2));
   const x = Math.cos(toRad(lat1)) * Math.sin(toRad(lat2)) -
@@ -137,12 +136,15 @@ function pickTargets() {
   const third  = pick(spokes[1]);
   liveTargets = [first, second, third].filter(Boolean);
 
-  // create markers and store
-  liveMarkers = liveTargets.map(t =>
-    L.circleMarker([t.lat, t.lon], { radius:6, color:TARGET_COLOR, weight:1, fillOpacity:1 })
+  // create markers, remove tooltip, add click handler, store
+  liveMarkers = liveTargets.map(t => {
+    const marker = L.circleMarker([t.lat, t.lon], { radius:6, color:TARGET_COLOR, weight:1, fillOpacity:1 })
       .addTo(map)
-      .bindTooltip(t.name)
-  );
+      .off('mouseover')
+      .off('click')
+      .on('click', () => showTarget(t));
+    return marker;
+  });
 
   map.fitBounds(L.featureGroup(liveMarkers).getBounds().pad(0.125));
   showTarget(first);
