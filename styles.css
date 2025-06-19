@@ -48,6 +48,14 @@ body {
   align-items: center;
   z-index: 10;
 }
+#headerBar {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* so things line up to the left */
+}
+#titleTag {
+  margin-top: 4px; /* spacing between the title row and the tag */
+}
 
 /* title widget */
 #titleWidget {
