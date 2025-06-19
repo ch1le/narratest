@@ -1,4 +1,4 @@
-/* Mobile Orientation HUD – driving route version with bounce, click activation, and propagated tags */
+/* App.js: Mobile Orientation HUD – driving route with bounce, click activation, and propagated tags repositioned */
 
 /* ---------- helpers ---------- */
 const $        = sel => document.querySelector(sel);
@@ -117,7 +117,7 @@ function haversine(lat1, lon1, lat2, lon2) {
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 function bearing(lat1, lon1, lat2, lon2) {
-  const y = Math.sin(toRad(lon2 - lon1)) * Math.cos(toRad(lat2));
+  const y = Math.sin(toRad(lon2 - lon1)) * Math.cos(toRad(la2));
   const x = Math.cos(toRad(lat1)) * Math.sin(toRad(lat2)) -
             Math.sin(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.cos(toRad(lon2 - lon1));
   return norm(Math.atan2(y, x) * 180 / Math.PI);
@@ -141,10 +141,9 @@ function pickTargets() {
   liveTargets = [first, second, third].filter(Boolean);
 
   liveMarkers = liveTargets.map(t => {
-    const marker = L.circleMarker([t.lat, t.lon], { radius:6, color:TARGET_COLOR, weight:1, fillOpacity:1 })
+    return L.circleMarker([t.lat, t.lon], { radius:6, color:TARGET_COLOR, weight:1, fillOpacity:1 })
       .addTo(map)
       .on('click', () => showTarget(t));
-    return marker;
   });
 
   map.fitBounds(L.featureGroup(liveMarkers).getBounds().pad(0.125));
@@ -154,19 +153,19 @@ function pickTargets() {
 /* ---------- display one target + driving route ---------- */
 function showTarget(t) {
   titleText.textContent = t.name;
-  // display propagated tag beneath the title widget
-let tagEl = document.getElementById('titleTag');
-const titleWidget = document.getElementById('titleWidget');
-if (!tagEl) {
-  tagEl = document.createElement('span');
-  tagEl.id = 'titleTag';
-  tagEl.className = 'tag';
-  // insert after the titleWidget div, so it sits below
-  titleWidget.insertAdjacentElement('afterend', tagEl);
-}
-tagEl.textContent = t.tag;
-tagEl.dataset.tag = t.tag;
-tagEl.classList.remove('deselected' );('deselected');
+
+  // display propagated tag below headerBar
+  let tagEl = document.getElementById('titleTag');
+  const headerBar = document.getElementById('headerBar');
+  if (!tagEl) {
+    tagEl = document.createElement('span');
+    tagEl.id = 'titleTag';
+    tagEl.className = 'tag';
+    headerBar.insertAdjacentElement('afterend', tagEl);
+  }
+  tagEl.textContent = t.tag;
+  tagEl.dataset.tag = t.tag;
+  tagEl.classList.remove('deselected');
 
   descBox.textContent   = t.desc;
   descBox.style.opacity = "1";
