@@ -20,7 +20,7 @@ const loader         = $("#loader");
 const VIEW_TOL      = 20;
 const SPOKE_TOL     = 25;
 const SPOKE_ANGLE   = 120;
-const TARGET_COLOR  = "#ff9500";
+const TARGET_COLOR  = "#000";
 const COMPASS_COLOR = "#0066ff";
 
 /* ---------- state ---------- */
