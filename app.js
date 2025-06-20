@@ -41,12 +41,8 @@ Promise.all([
   new Promise(res => {
     const USE_MOCK = true;
     if (USE_MOCK) {
-      userLat = 58.377019
-
-;
-      userLon = 26.730289
-
-;
+      userLat = 58.377679;
+      userLon = 26.717398;
       res();
     } else {
       navigator.geolocation.getCurrentPosition(
@@ -219,5 +215,46 @@ function handleOrientation({ alpha = 0 }) {
   });
 }
 
-/* ---------- bookmark toggle ---------- */
+/* ---------- random relocate button ---------- */
+// create a red button at bottom right to randomize mock location
+const randomBtn = document.createElement('button');
+randomBtn.textContent = 'Randomize Location';
+Object.assign(randomBtn.style, {
+  position: 'fixed',
+  bottom: '16px',
+  right: '16px',
+  padding: '10px 14px',
+  background: 'red',
+  color: '#fff',
+  border: 'none',
+  borderRadius: '4px',
+  zIndex: 30,
+  cursor: 'pointer'
+});
+document.body.appendChild(randomBtn);
+
+randomBtn.addEventListener('click', () => {
+  // random distance up to 1000m and random bearing
+  const R = 6371e3;
+  const maxDistance = 1000; // meters
+  const d = Math.random() * maxDistance;
+  const brng = Math.random() * 2 * Math.PI;
+  const lat1 = toRad(58.377679);
+  const lon1 = toRad(26.717398);
+  const lat2 = Math.asin(Math.sin(lat1) * Math.cos(d / R) +
+                    Math.cos(lat1) * Math.sin(d / R) * Math.cos(brng));
+  const lon2 = lon1 + Math.atan2(
+                    Math.sin(brng) * Math.sin(d / R) * Math.cos(lat1),
+                    Math.cos(d / R) - Math.sin(lat1) * Math.sin(lat2)
+                  );
+  userLat = lat2 * 180 / Math.PI;
+  userLon = lon2 * 180 / Math.PI;
+  // update compass marker and map view
+  compassMarker.setLatLng([userLat, userLon]);
+  map.setView([userLat, userLon]);
+  // recalc targets and routing
+  pickTargets();
+});
+
+/* ---------- bookmark toggle ---------- */ */
 bookmark.addEventListener("click", () => bookmark.classList.toggle("bookmark-selected"));
