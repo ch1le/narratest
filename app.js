@@ -41,8 +41,12 @@ Promise.all([
   new Promise(res => {
     const USE_MOCK = true;
     if (USE_MOCK) {
-      userLat = 58.377679;
-      userLon = 26.717398;
+      userLat = 58.377019
+
+;
+      userLon = 26.730289
+
+;
       res();
     } else {
       navigator.geolocation.getCurrentPosition(
