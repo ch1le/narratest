@@ -1,4 +1,4 @@
-/* App.js: Mobile Orientation HUD – cleaned-up version with title, tag, desc below map */
+/* App.js: Mobile Orientation HUD – driving route with bounce, click activation, and propagated tags below map + reveal all objects */
 
 /* ---------- Helpers ---------- */
 const $        = sel => document.querySelector(sel);
@@ -21,6 +21,7 @@ const SPOKE_TOL     = 25;
 const SPOKE_ANGLE   = 120;
 const TARGET_COLOR  = "#000";
 const COMPASS_COLOR = "#0066ff";
+const ALL_COLOR     = "#888"; // grey for reveal
 
 /* ---------- State ---------- */
 let DATA = null,
@@ -30,9 +31,11 @@ let DATA = null,
     initialAlpha = null;
 let liveTargets   = [];
 let liveMarkers   = [];
+let allMarkers    = [];
 let currentLabel  = "";
 let compassMarker = null;
 let routeControl  = null;
+let revealingAll  = false;
 
 /* ---------- Load content & Mock location ---------- */
 Promise.all([
@@ -66,16 +69,12 @@ selectorRow.addEventListener("click", e => {
 enableBtn.addEventListener("click", startPresent);
 
 function startPresent() {
-  // Remove permission UI
   permissionBox.remove();
-
-  // Initialize map & HUD
   buildMap();
   addCompassMarker();
+  setupAllMarkers();
   introVisuals();
   pickTargets();
-
-  // Listen for device orientation
   window.addEventListener("deviceorientation", handleOrientation);
 }
 
@@ -85,6 +84,43 @@ function buildMap() {
         .setView([userLat, userLon], 14);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19 })
     .addTo(map);
+}
+
+/* ---------- All Markers Setup ---------- */
+function setupAllMarkers() {
+  allMarkers = DATA.targets.map(t =>
+    L.circleMarker([t.lat, t.lon], { radius:6, color: ALL_COLOR, weight:1, fillOpacity:1 })
+  );
+  createRevealButton();
+}
+
+/* ---------- Reveal Button ---------- */
+function createRevealButton() {
+  const btn = document.createElement('button');
+  btn.textContent = 'Reveal';
+  Object.assign(btn.style, {
+    position: 'fixed',
+    bottom: '16px',
+    left: '16px',
+    padding: '10px 14px',
+    background: 'red',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '4px',
+    zIndex: 30,
+    cursor: 'pointer'
+  });
+  document.body.appendChild(btn);
+  btn.addEventListener('click', () => {
+    revealingAll = !revealingAll;
+    if (revealingAll) {
+      allMarkers.forEach(m => m.addTo(map));
+      btn.textContent = 'Hide';
+    } else {
+      allMarkers.forEach(m => m.remove());
+      btn.textContent = 'Reveal';
+    }
+  });
 }
 
 /* ---------- Compass Marker ---------- */
@@ -122,124 +158,36 @@ function bearing(lat1, lon1, lat2, lon2) {
 
 /* ---------- Pick Targets ---------- */
 function pickTargets() {
-  // Clear old markers
-  liveMarkers.forEach(m => m.remove());
-  liveMarkers = [];
-
-  // Compute distances & bearings
-  const list = DATA.targets.map(t => ({
-    ...t,
-    dist: haversine(userLat, userLon, t.lat, t.lon),
-    bear: bearing(userLat, userLon, t.lat, t.lon)
-  })).sort((a, b) => a.dist - b.dist);
-
+  liveMarkers.forEach(m => m.remove()); liveMarkers = [];
+  const list = DATA.targets.map(t => ({ dist: haversine(userLat, userLon, t.lat, t.lon), bear: bearing(userLat, userLon, t.lat, t.lon), ...t })).sort((a,b)=>a.dist-b.dist);
   const first = list[0];
-  const spokes = [norm(first.bear + SPOKE_ANGLE), norm(first.bear - SPOKE_ANGLE)];
-  const pickSpoke = dir =>
-    list.filter(t => Math.abs(shortest(dir, t.bear)) < SPOKE_TOL)
-        .sort((a, b) => a.dist - b.dist)[0];
-  const second = pickSpoke(spokes[0]);
-  const third  = pickSpoke(spokes[1]);
-  liveTargets = [first, second, third].filter(Boolean);
-
-  liveMarkers = liveTargets.map(t =>
-    L.circleMarker([t.lat, t.lon], { radius:6, color:TARGET_COLOR, weight:1, fillOpacity:1 })
-     .addTo(map)
-     .on('click', () => showTarget(t))
-  );
-
+  const spokes = [norm(first.bear+SPOKE_ANGLE), norm(first.bear-SPOKE_ANGLE)];
+  const pickSpoke = dir => list.filter(t=>Math.abs(shortest(dir,t.bear))<SPOKE_TOL).sort((a,b)=>a.dist-b.dist)[0];
+  liveTargets = [first, pickSpoke(spokes[0]), pickSpoke(spokes[1])].filter(Boolean);
+  liveMarkers = liveTargets.map(t=> L.circleMarker([t.lat,t.lon],{radius:6,color:TARGET_COLOR,weight:1,fillOpacity:1}).addTo(map).on('click',()=>showTarget(t)) );
   map.fitBounds(L.featureGroup(liveMarkers).getBounds().pad(0.125));
   showTarget(first);
 }
 
 /* ---------- Show Target ---------- */
 function showTarget(t) {
-  // Build description box content: title, tag, desc
   descBox.innerHTML = '';
-  
-  // Title
-  const titleEl = document.createElement('div');
-  titleEl.textContent = t.name;
-  titleEl.style.fontSize = '20pt';
-  titleEl.style.fontWeight = '500';
-  descBox.appendChild(titleEl);
-
-  // Tag
-  const tagEl = document.createElement('span');
-  tagEl.className = 'tag';
-  tagEl.textContent = t.tag;
-  tagEl.dataset.tag = t.tag;
-  descBox.appendChild(tagEl);
-
-  // Description
-  const descText = document.createElement('div');
-  descText.textContent = t.desc;
-  descText.style.marginTop = '8px';
-  descBox.appendChild(descText);
-
-  descBox.style.opacity = '1';
-  currentLabel = t.name;
-
-  // Bounce active marker
-  liveMarkers.forEach(m => {
-    const el = m.getElement(); if(el) el.classList.remove('active-marker');
-  });
-  const active = liveMarkers.find(m => {
-    const { lat, lng } = m.getLatLng(); return lat === t.lat && lng === t.lon;
-  });
-  if (active) {
-    const el = active.getElement(); if(el) el.classList.add('active-marker');
-  }
-
-  // Routing
-  if (routeControl) {
-    routeControl.setWaypoints([[userLat, userLon], [t.lat, t.lon]]);
-  } else {
-    routeControl = L.Routing.control({
-      waypoints: [[userLat, userLon], [t.lat, t.lon]],
-      lineOptions: { styles: [{ color:'#000', weight:3 }] },
-      createMarker: () => null,
-      addWaypoints: false,
-      draggableWaypoints: false,
-      fitSelectedRoutes: false,
-      showAlternatives: false,
-      show: false
-    }).addTo(map);
-    document.querySelectorAll('.leaflet-routing-container').forEach(el => el.style.display = 'none');
-  }
+  const titleEl = document.createElement('div'); titleEl.textContent = t.name; titleEl.style.fontSize='20pt'; titleEl.style.fontWeight='500'; descBox.appendChild(titleEl);
+  const tagEl = document.createElement('span'); tagEl.className='tag'; tagEl.textContent=t.tag; descBox.appendChild(tagEl);
+  const descText = document.createElement('div'); descText.textContent=t.desc; descText.style.marginTop='8px'; descBox.appendChild(descText);
+  descBox.style.opacity='1'; currentLabel=t.name;
+  liveMarkers.forEach(m=>{ const el=m.getElement(); if(el)el.classList.remove('active-marker'); });
+  const act=liveMarkers.find(m=>{const p=m.getLatLng();return p.lat===t.lat&&p.lng===t.lon;}); if(act){ const el=act.getElement(); if(el)el.classList.add('active-marker'); }
+  if(routeControl){ routeControl.setWaypoints([[userLat,userLon],[t.lat,t.lon]]); }
+  else{ routeControl=L.Routing.control({waypoints:[[userLat,userLon],[t.lat,t.lon]],lineOptions:{styles:[{color:'#000',weight:3}]},createMarker:()=>null,addWaypoints:false,draggableWaypoints:false,fitSelectedRoutes:false,showAlternatives:false,show:false}).addTo(map);
+    document.querySelectorAll('.leaflet-routing-container').forEach(el=>el.style.display='none'); }
 }
 
 /* ---------- Orientation Handler ---------- */
-function handleOrientation({ alpha = 0 }) {
-  if (!DATA) return;
-  alpha = norm(alpha);
-  if (initialAlpha === null) initialAlpha = alpha;
-  const heading = norm(initialAlpha - alpha);
-  const svg = compassMarker.getElement().querySelector('svg');
-  svg.style.transform = `rotate(${heading}deg)`;
-
-  liveTargets.forEach(t => {
-    if (Math.abs(shortest(heading, t.bear)) < VIEW_TOL && currentLabel !== t.name) {
-      showTarget(t);
-    }
-  });
-}
+function handleOrientation({alpha=0}){ if(!DATA)return; alpha=norm(alpha); if(initialAlpha===null)initialAlpha=alpha; const heading=norm(initialAlpha-alpha); const svg=compassMarker.getElement().querySelector('svg'); svg.style.transform=`rotate(${heading}deg)`; liveTargets.forEach(t=>{ if(Math.abs(shortest(heading,t.bear))<VIEW_TOL&&currentLabel!==t.name) showTarget(t); }); }
 
 /* ---------- Randomize Location Button ---------- */
-const randomBtn = document.createElement('button');
-randomBtn.textContent = 'Randomize Location';
-Object.assign(randomBtn.style, { position:'fixed', bottom:'16px', right:'16px', padding:'10px 14px', background:'red', color:'#fff', border:'none', borderRadius:'4px', zIndex:30, cursor:'pointer' });
-document.body.appendChild(randomBtn);
-randomBtn.addEventListener('click', () => {
-  const R = 6371e3, maxD = 1000, d = Math.random() * maxD, brng = Math.random() * 2 * Math.PI;
-  const lat1 = toRad(58.377679), lon1 = toRad(26.717398);
-  const lat2 = Math.asin(Math.sin(lat1) * Math.cos(d/R) + Math.cos(lat1) * Math.sin(d/R) * Math.cos(brng));
-  const lon2 = lon1 + Math.atan2(Math.sin(brng) * Math.sin(d/R) * Math.cos(lat1), Math.cos(d/R) - Math.sin(lat1) * Math.sin(lat2));
-  userLat = lat2 * 180/Math.PI; userLon = lon2 * 180/Math.PI;
-  compassMarker.setLatLng([userLat, userLon]);
-  map.setView([userLat, userLon]);
-  pickTargets();
-});
+const randomBtn=document.createElement('button'); randomBtn.textContent='Randomize Location'; Object.assign(randomBtn.style,{position:'fixed',bottom:'16px',right:'16px',padding:'10px 14px',background:'red',color:'#fff',border:'none',borderRadius:'4px',zIndex:30,cursor:'pointer'}); document.body.appendChild(randomBtn); randomBtn.addEventListener('click',()=>{ const R=6371e3,maxD=1000,d=Math.random()*maxD,brng=Math.random()*2*Math.PI; const lat1=toRad(58.377679),lon1=toRad(26.717398); const lat2=Math.asin(Math.sin(lat1)*Math.cos(d/R)+Math.cos(lat1)*Math.sin(d/R)*Math.cos(brng)); const lon2=lon1+Math.atan2(Math.sin(brng)*Math.sin(d/R)*Math.cos(lat1),Math.cos(d/R)-Math.sin(lat1)*Math.sin(lat2)); userLat=lat2*180/Math.PI;userLon=lon2*180/Math.PI; compassMarker.setLatLng([userLat,userLon]);map.setView([userLat,userLon]); pickTargets(); });
 
 /* ---------- Bookmark Toggle ---------- */
-bookmark.addEventListener('click', () => bookmark.classList.toggle('bookmark-selected'));
+bookmark.addEventListener('click',()=>bookmark.classList.toggle('bookmark-selected'));
