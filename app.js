@@ -137,17 +137,71 @@ function pickTargets() {
 }
 
 function showTarget(t) {
-  titleText.textContent = t.name;
+  // Hide the old header bar
+  const headerBar = document.getElementById('headerBar');
+  headerBar && headerBar.remove();
 
-  // insert tag above description
-  let tagEl = document.getElementById('titleTag');
-  if (!tagEl) {
-    tagEl = document.createElement('span');
-    tagEl.id = 'titleTag';
-    tagEl.className = 'tag';
-    tagEl.style.display = 'block';
-    tagEl.style.marginBottom = '6px';
+  // Rebuild descBox: title, tag, description
+  descBox.innerHTML = '';
+
+  // Title
+  const titleEl = document.createElement('div');
+  titleEl.id = 'descTitle';
+  titleEl.textContent = t.name;
+  titleEl.style.fontSize = '20pt';
+  titleEl.style.fontWeight = '500';
+  titleEl.style.whiteSpace = 'nowrap';
+  titleEl.style.overflow = 'hidden';
+  titleEl.style.textOverflow = 'ellipsis';
+  descBox.appendChild(titleEl);
+
+  // Tag below title
+  const tagEl = document.createElement('span');
+  tagEl.className = 'tag';
+  tagEl.textContent = t.tag;
+  tagEl.dataset.tag = t.tag;
+  tagEl.style.display = 'inline-block';
+  tagEl.style.margin = '4px 0';
+  descBox.appendChild(tagEl);
+
+  // Description text
+  const descText = document.createElement('div');
+  descText.textContent = t.desc;
+  descText.style.marginTop = '8px';
+  descBox.appendChild(descText);
+
+  descBox.style.opacity = '1';
+  currentLabel = t.name;
+
+  // Bounce animation for active marker
+  liveMarkers.forEach(m => {
+    const el = m.getElement(); if (el) el.classList.remove('active-marker');
+  });
+  const active = liveMarkers.find(m => {
+    const { lat, lng } = m.getLatLng(); return lat === t.lat && lng === t.lon;
+  });
+  if (active) {
+    const el = active.getElement(); if (el) el.classList.add('active-marker');
   }
+
+  // Update or create route
+  if (routeControl) {
+    routeControl.setWaypoints([[userLat,userLon],[t.lat,t.lon]]);
+  } else {
+    routeControl = L.Routing.control({
+      waypoints: [[userLat,userLon],[t.lat,t.lon]],
+      lineOptions: { styles: [{ color: '#000', weight: 3 }] },
+      createMarker: () => null,
+      addWaypoints: false,
+      draggableWaypoints: false,
+      fitSelectedRoutes: false,
+      showAlternatives: false,
+      show: false
+    }).addTo(map);
+    document.querySelectorAll('.leaflet-routing-container')
+            .forEach(el => el.style.display = 'none');
+  }
+}
   tagEl.textContent = t.tag;
   tagEl.dataset.tag = t.tag;
 
