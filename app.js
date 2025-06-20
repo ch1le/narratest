@@ -103,6 +103,12 @@ function bearing(lat1,lon1,lat2,lon2) {
 }
 
 function pickTargets() {
+  // remove previous markers
+  if (liveMarkers.length) {
+    liveMarkers.forEach(m => m.remove());
+    liveMarkers = [];
+  }
+
   const list = DATA.targets.map(t=>({
     ...t,
     dist: haversine(userLat,userLon,t.lat,t.lon),
@@ -117,6 +123,10 @@ function pickTargets() {
   liveTargets=[first,second,third].filter(Boolean);
 
   liveMarkers = liveTargets.map(t=>
+    L.circleMarker([t.lat,t.lon],{radius:6,color:TARGET_COLOR,weight:1,fillOpacity:1})
+     .addTo(map)
+     .on('click',()=>showTarget(t))
+  );(t=>
     L.circleMarker([t.lat,t.lon],{radius:6,color:TARGET_COLOR,weight:1,fillOpacity:1})
      .addTo(map)
      .on('click',()=>showTarget(t))
