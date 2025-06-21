@@ -136,21 +136,82 @@ function handleMarkerClick(t) {
 /* ---------- Tertiary Click: Show Quaternary ---------- */
 function handleTertiaryClick(parent, t) {
   // compute quaternary
-  quaternaryTargets = DATA.targets.filter(x=>x.name!==liveTargets[0].name && x.name!==parent.name && x.name!==t.name)
-    .map(x=>({...x,dist:haversine(t.lat,t.lon,x.lat,x.lon)})).sort((a,b)=>a.dist-b.dist).slice(0,2);
-  quaternaryMarkers.forEach(m=>m.remove()); quaternaryMarkers=[];
-  quaternaryMarkers=quaternaryTargets.map(x=>L.circleMarker([x.lat,x.lon],{radius:6,color:QUATERNARY_COLOR,weight:1,fillOpacity:1}).addTo(map).on('click',()=>handleMarkerClick(x)));
-  // build description: primary collapsed, secondary title, tertiary title+desc
-  descBox.innerHTML='';
-  // secondary header
-  const secHeader=document.createElement('div');Object.assign(secHeader.style,{fontSize:'20pt',fontWeight:'500'});secHeader.textContent=parent.name;descBox.appendChild(secHeader);
-  // tertiary header
-  const terHeader=document.createElement('div');Object.assign(terHeader.style,{fontSize:'18pt',fontWeight:'500',marginTop:'8px'});terHeader.textContent=t.name;descBox.appendChild(terHeader);
-  // tertiary description
-  const terDesc=document.createElement('div');terDesc.textContent=t.desc;terDesc.style.marginTop='4px';descBox.appendChild(terDesc);
-  // route through secondary to tertiary
-  if(routeControl) routeControl.setWaypoints([[userLat,userLon],[parent.lat,parent.lon],[t.lat,t.lon]]);
-  else routeControl=L.Routing.control({router:L.Routing.osrmv1({serviceUrl:'https://router.project-osrm.org/route/v1'}),waypoints:[[userLat,userLon],[parent.lat,parent.lon],[t.lat,t.lon]],lineOptions:{styles:[{color:'#000',weight:3}]},createMarker:()=>null,addWaypoints:false,draggableWaypoints:false,fitSelectedRoutes:false,showAlternatives:false,show:false}).addTo(map),document.querySelectorAll('.leaflet-routing-container').forEach(el=>el.style.display='none');
+  quaternaryTargets = DATA.targets
+    .filter(x => x.name !== liveTargets[0].name && x.name !== parent.name && x.name !== t.name)
+    .map(x => ({ ...x, dist: haversine(t.lat, t.lon, x.lat, x.lon) }))
+    .sort((a, b) => a.dist - b.dist)
+    .slice(0, 2);
+  // clear old markers
+  quaternaryMarkers.forEach(m => m.remove());
+  quaternaryMarkers = [];
+  // draw new quaternary markers
+  quaternaryMarkers = quaternaryTargets.map(x =>
+    L.circleMarker([x.lat, x.lon], { radius: 6, color: QUATERNARY_COLOR, weight: 1, fillOpacity: 1 })
+      .addTo(map)
+      .on('click', () => handleMarkerClick(x))
+  );
+
+  // clear description and build new layout
+  descBox.innerHTML = '';
+
+  // Secondary title (parent) - always visible
+  const secTitle = document.createElement('div');
+  secTitle.textContent = parent.name;
+  Object.assign(secTitle.style, { fontSize: '20pt', fontWeight: '500' });
+  descBox.appendChild(secTitle);
+
+  // Separator line
+  const separator = document.createElement('hr');
+  Object.assign(separator.style, { border: 'none', borderTop: '1px solid #ccc', margin: '8px 0' });
+  descBox.appendChild(separator);
+
+  // Tertiary header row with collapse button
+  const terHeader = document.createElement('div');
+  Object.assign(terHeader.style, { display: 'flex', alignItems: 'center', gap: '8px' });
+
+  const terTitle = document.createElement('div');
+  terTitle.textContent = t.name;
+  Object.assign(terTitle.style, { fontSize: '18pt', fontWeight: '500' });
+  terHeader.appendChild(terTitle);
+
+  const collapseBtn = document.createElement('button');
+  collapseBtn.textContent = '▾';
+  Object.assign(collapseBtn.style, { marginLeft: 'auto', background: 'none', border: 'none', fontSize: '18px', cursor: 'pointer' });
+  terHeader.appendChild(collapseBtn);
+
+  descBox.appendChild(terHeader);
+
+  // Tertiary description (uncollapsed by default)
+  const terDesc = document.createElement('div');
+  terDesc.textContent = t.desc;
+  Object.assign(terDesc.style, { marginTop: '4px' });
+  descBox.appendChild(terDesc);
+  descBox.style.opacity = '1';
+
+  // Collapse logic for tertiary description
+  collapseBtn.addEventListener('click', () => {
+    const hidden = terDesc.style.display === 'none';
+    terDesc.style.display = hidden ? 'block' : 'none';
+    collapseBtn.textContent = hidden ? '▾' : '▴';
+  });
+
+  // draw route through secondary to tertiary
+  if (routeControl) {
+    routeControl.setWaypoints([[userLat, userLon], [parent.lat, parent.lon], [t.lat, t.lon]]);
+  } else {
+    routeControl = L.Routing.control({
+      router: L.Routing.osrmv1({ serviceUrl: 'https://router.project-osrm.org/route/v1' }),
+      waypoints: [[userLat, userLon], [parent.lat, parent.lon], [t.lat, t.lon]],
+      lineOptions: { styles: [{ color: '#000', weight: 3 }] },
+      createMarker: () => null,
+      addWaypoints: false,
+      draggableWaypoints: false,
+      fitSelectedRoutes: false,
+      showAlternatives: false,
+      show: false
+    }).addTo(map);
+    document.querySelectorAll('.leaflet-routing-container').forEach(el => el.style.display = 'none');
+  }
 }
 
 /* ---------- Show Target (Primary & Secondary) ---------- */
