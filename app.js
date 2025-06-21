@@ -156,6 +156,11 @@ function handleTertiaryClick(parent, t) {
 
   // Secondary header row with collapse toggle
   const secHeader = document.createElement('div');
+  // Secondary tag visible when collapsed
+  const secTag = document.createElement('span');
+  secTag.className = 'tag';
+  secTag.textContent = parent.tag;
+  secHeader.appendChild(secTag);
   Object.assign(secHeader.style, { display: 'flex', alignItems: 'center', gap: '8px' });
   const secTitle = document.createElement('div');
   secTitle.textContent = parent.name;
