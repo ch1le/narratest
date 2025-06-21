@@ -317,7 +317,7 @@ function handleQuaternaryClick(sec, ter, qua) {
 }
 
 /* ---------- Show Target (Primary/Secondary) ---------- */
-function showTarget(t)(t) {
+function showTarget(t) {
   descBox.innerHTML=''; currentLabel=t.name;
   const header = document.createElement('div'); Object.assign(header.style,{display:'flex',alignItems:'center',gap:'8px'});
   const bm2 = bookmark.cloneNode(true); bm2.style.display='inline-block'; header.appendChild(bm2);
