@@ -69,8 +69,46 @@ function startPresent() {
   initMap();
   addCompass();
   setupAllMarkers();
-  intro();
+  introVisuals();
   pickPrimaryTargets();
+
+  // Randomize location button
+  const rndBtn = document.createElement('button');
+  rndBtn.textContent = 'Randomize';
+  Object.assign(rndBtn.style, {
+    position: 'fixed',
+    bottom: '16px',
+    right: '16px',
+    padding: '8px',
+    background: 'red',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '4px',
+    zIndex: 30,
+    cursor: 'pointer'
+  });
+  document.body.appendChild(rndBtn);
+  rndBtn.addEventListener('click', () => {
+    const R = 6371e3;
+    const d = Math.random() * 1000;
+    const brng = Math.random() * 2 * Math.PI;
+    const lat1 = toRad(58.377679), lon1 = toRad(26.717398);
+    const lat2 = Math.asin(
+      Math.sin(lat1) * Math.cos(d / R) +
+      Math.cos(lat1) * Math.sin(d / R) * Math.cos(brng)
+    );
+    const lon2 = lon1 + Math.atan2(
+      Math.sin(brng) * Math.sin(d / R) * Math.cos(lat1),
+      Math.cos(d / R) - Math.sin(lat1) * Math.sin(lat2)
+    );
+    userLat = (lat2 * 180) / Math.PI;
+    userLon = (lon2 * 180) / Math.PI;
+    // move compass marker and recenter
+    const compassLayer = Object.values(map._layers).find(l => l.options && l.options.icon);
+    if (compassLayer) compassLayer.setLatLng([userLat, userLon]);
+    map.setView([userLat, userLon], 14);
+    pickPrimaryTargets();
+  });
   window.addEventListener("deviceorientation", handleOrientation);
 }
 
