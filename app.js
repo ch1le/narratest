@@ -65,34 +65,32 @@ function addCompass(){
 }
 
 /* ---------- Chain Generation ---------- */
-function generateChain(heading){
-  // sort all targets by absolute bearing difference from user heading
-  chain = DATA.targets.map(t=>{
-    const y = Math.sin(toRad(t.lon-userLon))*Math.cos(toRad(t.lat));
-    const x = Math.cos(toRad(userLat))*Math.sin(toRad(t.lat)) -
-              Math.sin(toRad(userLat))*Math.cos(toRad(t.lat))*Math.cos(toRad(t.lon-userLon));
-    const bear = norm(Math.atan2(y,x)*180/Math.PI);
-    const diff = Math.abs(norm(bear - heading));
-    return {...t,bear,diff};
-  })
-  .sort((a,b)=>a.diff - b.diff)
-  .slice(0, 3); // limit chain to first three targets
-};
-  }).sort((a,b)=>a.diff - b.diff);
-}
+function generateChain() {
+  if (!DATA) return;
+  // 1. Primary: the closest target to user
+  const byDist = DATA.targets.map(t => ({
+    ...t,
+    dist: haversine(userLat, userLon, t.lat, t.lon)
+  })).sort((a,b) => a.dist - b.dist);
+  const primary = byDist[0];
 
-/* ---------- Markers ---------- */
-function updateMarkers(){
-  // clear existing
-  markers.forEach(m=>m.remove()); markers=[];
-  // show full chain markers
-  chain.forEach((t,i)=>{
-    const color = i===0? COLORS.primary: COLORS.chain;
-    const m = L.circleMarker([t.lat,t.lon],{radius:6,color,weight:1,fillOpacity:1})
-      .addTo(map)
-      .on('click',()=>focusOn(i));
-    markers.push(m);
-  });
+  // 2. Compute vector bearing from user to primary
+  const vectorBear = bearing(userLat, userLon, primary.lat, primary.lon);
+
+  // 3. From primary, pick two next targets that continue vector
+  const others = DATA.targets.filter(t => t.name !== primary.name);
+  const secondary = others.map(t => ({
+    ...t,
+    bear: bearing(primary.lat, primary.lon, t.lat, t.lon),
+    dist: haversine(primary.lat, primary.lon, t.lat, t.lon)
+  }))
+  .sort((a,b) => Math.abs(shortest(a.bear, vectorBear)) - Math.abs(shortest(b.bear, vectorBear))
+             || a.dist - b.dist)
+  .slice(0,2);
+
+  // 4. Build chain
+  chain = [primary, ...secondary];
+}
 }
 
 /* ---------- Focus & Routing ---------- */
