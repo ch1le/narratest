@@ -144,8 +144,8 @@ function pickPrimaryTargets() {
   clearChain();
   const tags = Array.from(document.querySelectorAll('.tag'))
     .filter(el=>!el.classList.contains('deselected')).map(el=>el.dataset.tag);
-  const candidates = DATA.targets.filter(t=>tags.includes(t.tag));
-  if(!candidates.length) return;
+  let candidates = DATA.targets.filter(t=>tags.includes(t.tag));
+  if (!candidates.length) candidates = DATA.targets;
   const list = candidates.map(t=>({
     ...t,
     dist: haversine(userLat,userLon,t.lat,t.lon),
