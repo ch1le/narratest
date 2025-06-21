@@ -154,11 +154,31 @@ function handleTertiaryClick(parent, t) {
   // clear description and build new layout
   descBox.innerHTML = '';
 
-  // Secondary title (parent) - always visible
+  // Secondary header row with collapse toggle
+  const secHeader = document.createElement('div');
+  Object.assign(secHeader.style, { display: 'flex', alignItems: 'center', gap: '8px' });
   const secTitle = document.createElement('div');
   secTitle.textContent = parent.name;
   Object.assign(secTitle.style, { fontSize: '20pt', fontWeight: '500' });
-  descBox.appendChild(secTitle);
+  secHeader.appendChild(secTitle);
+  const secCollapse = document.createElement('button');
+  secCollapse.textContent = '▾';
+  Object.assign(secCollapse.style, { marginLeft: 'auto', background: 'none', border: 'none', fontSize: '18px', cursor: 'pointer' });
+  secHeader.appendChild(secCollapse);
+  descBox.appendChild(secHeader);
+
+  // Secondary description (collapsed by default)
+  const secDesc = document.createElement('div');
+  secDesc.textContent = parent.desc;
+  Object.assign(secDesc.style, { marginTop: '4px', display: 'none' });
+  descBox.appendChild(secDesc);
+
+  // Collapse logic for secondary description
+  secCollapse.addEventListener('click', () => {
+    const hidden = secDesc.style.display === 'none';
+    secDesc.style.display = hidden ? 'block' : 'none';
+    secCollapse.textContent = hidden ? '▾' : '▴';
+  });
 
   // Separator line
   const separator = document.createElement('hr');
