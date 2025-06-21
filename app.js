@@ -74,6 +74,10 @@ function generateChain(heading){
     const bear = norm(Math.atan2(y,x)*180/Math.PI);
     const diff = Math.abs(norm(bear - heading));
     return {...t,bear,diff};
+  })
+  .sort((a,b)=>a.diff - b.diff)
+  .slice(0, 3); // limit chain to first three targets
+};
   }).sort((a,b)=>a.diff - b.diff);
 }
 
