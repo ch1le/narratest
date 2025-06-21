@@ -128,7 +128,8 @@ function addCompass() {
 /* ---------- Reveal All ---------- */
 function setupAllMarkers() {
   allMarkers = DATA.targets.map(t => L.circleMarker([t.lat,t.lon],{radius:6,color:COLORS.all,weight:1,fillOpacity:1}));
-  const btn = L.DomUtil.create('button','','');
+  // Create Reveal/Hide button using standard DOM API
+  const btn = document.createElement('button');,'');
   btn.textContent='Reveal';
   Object.assign(btn.style,{position:'fixed',bottom:'16px',left:'16px',padding:'8px',background:'red',color:'#fff',border:'none',borderRadius:'4px',zIndex:30,cursor:'pointer'});
   document.body.appendChild(btn);
