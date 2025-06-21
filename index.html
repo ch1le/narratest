@@ -1,38 +1,78 @@
 <!DOCTYPE html>
-<!-- Mobile Orientation HUD – map + routing line instead of straight vector -->
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Heading HUD – Map+Route</title>
+  <title>Heading HUD – Map First</title>
 
-  <!-- Fonts & Leaflet core -->
-  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <!-- Leaflet Routing Machine (minimal route line) -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+  <!-- Google Font -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500&display=swap"
+    rel="stylesheet"
+  />
 
-  <!-- Site‑wide stylesheet -->
+  <!-- Leaflet CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+  <!-- Leaflet Routing Machine CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css"
+  />
+
+  <!-- App-wide stylesheet -->
   <link rel="stylesheet" href="styles.css" />
 
-  <!-- Inline overrides for map/dots/bookmark -->
+  <!-- Small inline overrides -->
   <style>
-    .dot{z-index:2;width:8px;height:8px;background:#ff9500;border-radius:50%}
+    /* orange target dots */
+    .dot {
+      z-index: 2;
+      width: 8px;
+      height: 8px;
+      background: #ff9500;
+      border-radius: 50%;
+    }
 
-    /* bookmark icon rules */
-    #bookmark{display:none;cursor:pointer;pointer-events:auto}
-    #bookmark path{fill:none;stroke:#000;stroke-width:2}
-    #bookmark.bookmark-selected path{fill:#000 !important;stroke:#000 !important}
+    /* bookmark icon */
+    #bookmark {
+      cursor: pointer;
+      pointer-events: auto;
+    }
+    #bookmark path {
+      fill: none;
+      stroke: #000;
+      stroke-width: 2;
+    }
+    #bookmark.bookmark-selected path {
+      fill: #000;
+      stroke: #000;
+    }
 
-    /* 50‑vh map rectangle */
-    #map{position:fixed;top:0;left:0;right:0;height:50vh;z-index:4}
-    #selectorRow{background:transparent}
-    #descBox{position:absolute;top:calc(50vh + 8px);left:16px;right:16px;pointer-events:auto}
-      /* ensure compass arrow rotates from its centre */
-    .compass-icon svg{
-      overflow:visible;
-      transform-origin:14px 14px; /* centre of 28×28 icon */
-      transition:transform .15s linear;
+    /* 50 vh map rectangle */
+    #map {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 50vh;
+      z-index: 4;
+    }
+
+    /* tag row overlays map */
+    #selectorRow {
+      background: transparent;
+    }
+
+    /* description block sits just under the map */
+    #descBox {
+      position: absolute;
+      top: calc(50vh + 8px);
+      left: 16px;
+      right: 16px;
+      pointer-events: auto;
     }
   </style>
 </head>
@@ -46,34 +86,43 @@
     <span class="tag" data-tag="live">Live</span>
   </div>
 
+  <!-- Leaflet map -->
   <div id="map"></div>
 
-  <div id="permissionBox"><div id="permissionText"></div><button id="enable">Enable Location</button></div>
+  <!-- Permission prompt -->
+  <div id="permissionBox">
+    <div id="permissionText"></div>
+    <button id="enable">Enable Location</button>
+  </div>
 
+  <!-- Header with title + bookmark (will be removed at start) -->
   <div id="headerBar">
     <div id="titleWidget">
       <div id="loader"></div>
-      <svg id="bookmark" viewBox="0 0 24 24"><path d="M6 2a2 2 0 0 0-2 2v18l8-5.333L20 22V4a2 2 0 0 0-2-2H6z"/></svg>
+      <svg id="bookmark" viewBox="0 0 24 24">
+        <path d="M6 2a2 2 0 0 0-2 2v18l8-5.333L20 22V4a2 2 0 0 0-2-2H6z" />
+      </svg>
       <span id="titleText"></span>
     </div>
   </div>
 
+  <!-- Description -->
   <div id="descBox"></div>
 
-  <!-- Scripts -->
+  <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- Leaflet Routing Machine JS -->
   <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.min.js"></script>
-  <!-- OpenRouteService adapter for Leaflet-Routing-Machine -->
-  <script src="https://unpkg.com/@gegeweb/leaflet-routing-machine-openroute@0.1.10/dist/leaflet-routing-openroute.min.js"></script>
+
+  <!-- Main logic -->
   <script src="app.js"></script>
+
+  <!-- Tiny inline handler for bookmark toggle (cloned in app.js) -->
   <script>
-    // bookmark fill toggle
-    const bm=document.getElementById('bookmark');
-    const p=bm.querySelector('path');
-    bm.addEventListener('click',()=>{
-      const sel=bm.classList.toggle('bookmark-selected');
-      p.setAttribute('fill', sel? '#000':'none');
-    });
+    const bm = document.getElementById("bookmark");
+    if (bm) bm.addEventListener("click", () =>
+      bm.classList.toggle("bookmark-selected")
+    );
   </script>
 </body>
 </html>
