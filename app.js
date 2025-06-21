@@ -46,6 +46,9 @@ function startPresent() {
   setupRandomize();
   generateChain(0);
   updateMarkers();
+  // fit map to initial chain and draw route
+  map.fitBounds(L.featureGroup(markers).getBounds().pad(0.1));
+  drawRoute(chain);
   updateContentBar();
   map.on('zoomend', updateContentBar);
   window.addEventListener('deviceorientation', onOrientation);
