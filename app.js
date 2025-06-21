@@ -101,6 +101,8 @@ function setupRandomize() {
     map.setView([userLat,userLon],14);
     generateChain(initialAlpha||0);
     updateMarkers();
+    // update route after randomize
+    drawRoute(chain);
     updateContentBar();
   });
 }
@@ -151,19 +153,26 @@ function drawRoute(list) {
 }
 
 /* ---------- Content Bar ---------- */
-function updateContentBar(count=null) {
-  const b=map.getBounds();
-  let vis=chain.filter((t,i)=>b.contains([t.lat,t.lon]));
-  if(count!=null) vis=chain.slice(0,count);
-  descBar.innerHTML='';
-  vis.forEach((t,i)=>{
-    const r=document.createElement('div'); r.textContent=t.name;
-    Object.assign(r.style,{fontSize:`${20-i*2}px`,fontWeight:'500',cursor:'pointer'});
+function updateContentBar(count = null) {
+  const b = map.getBounds();
+  let vis = chain.filter((t, i) => b.contains([t.lat, t.lon]));
+  if (count != null) vis = chain.slice(0, count);
+  descBar.innerHTML = '';
+  vis.forEach((t, i) => {
+    const r = document.createElement('div');
+    r.textContent = t.name;
+    Object.assign(r.style, { fontSize: `${20 - i * 2}px`, fontWeight: '500', cursor: 'pointer' });
     descBar.appendChild(r);
-    if(vis.length===1){const d=document.createElement('div');d.textContent=t.desc;d.style.marginTop='8px';descBar.appendChild(d);}  
+    if (vis.length === 1) {
+      const d = document.createElement('div');
+      d.textContent = t.desc;
+      d.style.marginTop = '8px';
+      descBar.appendChild(d);
+    }
   });
+  // ensure content bar is visible
+  descBar.style.opacity = '1';
 }
-
 /* ---------- Orientation Handler ---------- */
 function onOrientation({alpha}){
   if(alpha==null) return;
