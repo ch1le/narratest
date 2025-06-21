@@ -60,6 +60,9 @@ selectorRow.addEventListener("click",e=>{
 /* ---------- Permission & Start ---------- */
 enableBtn.addEventListener("click",startPresent);
 function startPresent(){
+  // remove the original header bar (and its bookmark)
+  const hb = document.getElementById('headerBar');
+  if (hb) hb.remove();
   permissionBox.remove();
   buildMap();
   addCompassMarker();
