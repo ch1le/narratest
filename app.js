@@ -220,67 +220,104 @@ function handleMarkerClick(t) {
 }
 
 /* ---------- Tertiary Click: Show Quaternary ---------- */
-function handleTertiaryClick(parent, t) {
+function handleTertiaryClick(parentSecondary, parentTertiary) {
+  // compute quaternary candidates
   quaternaryTargets = DATA.targets
-    .filter(x => x.name !== liveTargets[0].name && x.name !== parent.name && x.name !== t.name)
-    .map(x => ({ ...x, dist: haversine(t.lat, t.lon, x.lat, x.lon) }))
-    .sort((a,b) => a.dist - b.dist)
-    .slice(0,2);
-  quaternaryMarkers.forEach(m => m.remove()); quaternaryMarkers = [];
-  quaternaryMarkers = quaternaryTargets.map(x =>
-    L.circleMarker([x.lat, x.lon], { radius:6, color:QUATERNARY_COLOR, weight:1, fillOpacity:1 })
+    .filter(x => x.name !== liveTargets[0].name && x.name !== parentSecondary.name && x.name !== parentTertiary.name)
+    .map(x => ({ ...x, dist: haversine(parentTertiary.lat, parentTertiary.lon, x.lat, x.lon) }))
+    .sort((a, b) => a.dist - b.dist)
+    .slice(0, 2);
+
+  // draw quaternary markers
+  quaternaryMarkers.forEach(m => m.remove());
+  quaternaryMarkers = quaternaryTargets.map(q =>
+    L.circleMarker([q.lat, q.lon], { radius: 6, color: QUATERNARY_COLOR, weight: 1, fillOpacity: 1 })
       .addTo(map)
-      .on('click', () => handleMarkerClick(x))
+      .on("click", () => handleQuaternaryClick(parentSecondary, parentTertiary, q))
   );
 
-  // render secondary + tertiary
-  descBox.innerHTML = '';
-  // Secondary row
-  const secHeader = document.createElement('div');
-  Object.assign(secHeader.style, { display:'flex', alignItems:'center', gap:'8px' });
-  const secTag = document.createElement('span'); secTag.className='tag'; secTag.textContent=parent.tag;
-  secHeader.appendChild(secTag);
-  const secTitle = document.createElement('div'); secTitle.textContent=parent.name;
-  Object.assign(secTitle.style, { fontSize:'20pt', fontWeight:'500' });
-  secHeader.appendChild(secTitle);
-  const secCollapse = document.createElement('button'); secCollapse.textContent='▾';
-  Object.assign(secCollapse.style,{ marginLeft:'auto', background:'none', border:'none', fontSize:'18px', cursor:'pointer' });
-  secHeader.appendChild(secCollapse);
-  descBox.appendChild(secHeader);
-  const secDesc = document.createElement('div'); secDesc.textContent=parent.desc;
-  Object.assign(secDesc.style,{ marginTop:'4px', display:'none' }); descBox.appendChild(secDesc);
-  secCollapse.addEventListener('click',()=>{ const hid=secDesc.style.display==='none'; secDesc.style.display=hid?'block':'none'; secCollapse.textContent=hid?'▾':'▴'; });
-  // separator
-  const sep = document.createElement('hr'); Object.assign(sep.style,{ border:'none',borderTop:'1px solid #ccc',margin:'8px 0' }); descBox.appendChild(sep);
+  // temporarily show chain of secondary + tertiary
+  showLockedChain([parentSecondary, parentTertiary]);
+}
 
-  // Tertiary row
-  const terHeader = document.createElement('div'); Object.assign(terHeader.style,{display:'flex',alignItems:'center',gap:'8px'});
-  const terTag = document.createElement('span'); terTag.className='tag'; terTag.textContent=t.tag; terHeader.appendChild(terTag);
-  const terTitle2 = document.createElement('div'); terTitle2.textContent=t.name;
-  Object.assign(terTitle2.style,{ fontSize:'18pt', fontWeight:'500' }); terHeader.appendChild(terTitle2);
-  const terCollapse = document.createElement('button'); terCollapse.textContent='▾';
-  Object.assign(terCollapse.style,{ marginLeft:'auto', background:'none', border:'none', fontSize:'18px', cursor:'pointer' });
-  terHeader.appendChild(terCollapse);
-  descBox.appendChild(terHeader);
-  const terDesc = document.createElement('div'); terDesc.textContent=t.desc;
-  Object.assign(terDesc.style,{ marginTop:'4px' }); descBox.appendChild(terDesc);
-  terCollapse.addEventListener('click',()=>{ const hid=terDesc.style.display==='none'; terDesc.style.display=hid?'block':'none'; terCollapse.textContent=hid?'▾':'▴'; });
+/* ---------- New: Quaternary Click: Full 3-level Chain ---------- */
+function handleQuaternaryClick(sec, ter, qua) {
+  descBox.innerHTML = "";
+  
+  // helper to render each level
+  function renderLevel(item, size, collapsed) {
+    // header row
+    const row = document.createElement("div");
+    Object.assign(row.style, { display: "flex", alignItems: "center", gap: "8px" });
+    const tag = document.createElement("span");
+    tag.className = "tag";
+    tag.textContent = item.tag;
+    row.appendChild(tag);
+    const title = document.createElement("div");
+    title.textContent = item.name;
+    Object.assign(title.style, { fontSize: size, fontWeight: "500" });
+    row.appendChild(title);
+    let desc;
+    if (collapsed || item === qua) {
+      const btn = document.createElement("button");
+      btn.textContent = collapsed ? "▾" : "";
+      Object.assign(btn.style, { marginLeft: "auto", background: "none", border: "none", fontSize: "18px", cursor: "pointer" });
+      row.appendChild(btn);
+      desc = document.createElement("div");
+      desc.textContent = item.desc;
+      Object.assign(desc.style, { marginTop: "4px", display: collapsed ? "none" : "block" });
+      btn.addEventListener("click", () => {
+        const hidden = desc.style.display === "none";
+        desc.style.display = hidden ? "block" : "none";
+        btn.textContent = hidden ? "▾" : "▴";
+      });
+    } else {
+      desc = document.createElement("div");
+      desc.textContent = item.desc;
+      Object.assign(desc.style, { marginTop: "4px" });
+    }
+    descBox.appendChild(row);
+    if (desc) descBox.appendChild(desc);
+    const hr = document.createElement("hr");
+    Object.assign(hr.style, { border: "none", borderTop: "1px solid #ccc", margin: "8px 0" });
+    descBox.appendChild(hr);
+  }
 
-  // route user->secondary->tertiary
-  if(routeControl) routeControl.setWaypoints([[userLat,userLon],[parent.lat,parent.lon],[t.lat,t.lon]]);
+  // render secondary (collapsed)
+  renderLevel(sec, "20pt", true);
+  // render tertiary (collapsed)
+  renderLevel(ter, "18pt", true);
+  // render quaternary (expanded)
+  renderLevel(qua, "16pt", false);
+
+  // route through all four
+  const waypoints = [
+    [userLat, userLon],
+    [sec.lat, sec.lon],
+    [ter.lat, ter.lon],
+    [qua.lat, qua.lon]
+  ];
+  if (routeControl) {
+    routeControl.setWaypoints(waypoints);
+  }
   else {
     routeControl = L.Routing.control({
-      router: L.Routing.osrmv1({serviceUrl:'https://router.project-osrm.org/route/v1'}),
-      waypoints: [[userLat,userLon],[parent.lat,parent.lon],[t.lat,t.lon]],
-      lineOptions:{styles:[{color:'#000',weight:3}]},
-      createMarker:()=>null,addWaypoints:false,draggableWaypoints:false,fitSelectedRoutes:false,showAlternatives:false,show:false
+      router: L.Routing.osrmv1({ serviceUrl: 'https://router.project-osrm.org/route/v1' }),
+      waypoints: waypoints,
+      lineOptions: { styles: [{ color: '#000', weight: 3 }] },
+      createMarker: () => null,
+      addWaypoints: false,
+      draggableWaypoints: false,
+      fitSelectedRoutes: false,
+      showAlternatives: false,
+      show: false
     }).addTo(map);
-    document.querySelectorAll('.leaflet-routing-container').forEach(el=>el.style.display='none');
+    document.querySelectorAll('.leaflet-routing-container').forEach(el => el.style.display = 'none');
   }
 }
 
 /* ---------- Show Target (Primary/Secondary) ---------- */
-function showTarget(t) {
+function showTarget(t)(t) {
   descBox.innerHTML=''; currentLabel=t.name;
   const header = document.createElement('div'); Object.assign(header.style,{display:'flex',alignItems:'center',gap:'8px'});
   const bm2 = bookmark.cloneNode(true); bm2.style.display='inline-block'; header.appendChild(bm2);
