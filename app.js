@@ -161,9 +161,8 @@ function drawRoute(list) {
     document.querySelectorAll('.leaflet-routing-container').forEach(el => el.style.display = 'none');
   }
 }
-}
 
-/* ---------- Content Bar ---------- */
+/* ---------- Content Bar */ ---------- */
 function updateContentBar(count = null) {
   const b = map.getBounds();
   let vis = chain.filter((t, i) => b.contains([t.lat, t.lon]));
