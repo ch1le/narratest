@@ -22,7 +22,7 @@ body {
   display: flex;
   justify-content: center;
   gap: 12px;
-  background: none;
+  background: transparent;
   z-index: 1000;
 }
 
@@ -105,7 +105,10 @@ body {
 
 /* Tag styles */
 .tag {
-  padding: 4px 4px;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  padding: 4px 12px;
   border: 1px solid #000;
   border-radius: 12px;
   background: #000;
@@ -117,4 +120,20 @@ body {
 .tag.deselected {
   background: #fff;
   color: #000;
+}
+
+/* Content bar text styling */
+#descBox > div:first-child {
+  /* Object title */
+  font-family: 'Raleway', sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  margin: 0;
+}
+#descBox > div:nth-child(2) {
+  /* Description text */
+  font-family: 'Raleway', sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  margin-top: 8px;
 }
