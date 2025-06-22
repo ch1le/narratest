@@ -1,33 +1,36 @@
-/* App.js: Mobile Orientation HUD – directional chain with controls restored */
+/* App.js: Mobile Orientation HUD – Simplest closest-point routing */
 
 /* ---------- Helpers ---------- */
 const $ = sel => document.querySelector(sel);
 const norm = d => (d % 360 + 360) % 360;
 const toRad = d => d * Math.PI / 180;
-const shortest = (a, b) => ((a - b + 540) % 360) - 180;
 
 /* ---------- DOM Refs ---------- */
-const enableBtn      = document.getElementById('enable');
-const permissionBox  = document.getElementById('permissionBox');
-const permissionText = document.getElementById('permissionText');
-const selectorRow    = document.getElementById('selectorRow');
-const descBar        = document.getElementById('descBox');
-const mapContainer   = document.getElementById('map');
-const loader         = document.getElementById('loader');
+const enableBtn      = $('#enable');
+const permissionBox  = $('#permissionBox');
+const permissionText = $('#permissionText');
+const selectorRow    = $('#selectorRow');
+const descBar        = $('#descBox');
+const mapContainer   = $('#map');
 
 /* ---------- Constants ---------- */
-const COLORS = { primary: '#000', chain: '#006400', compass: '#0066ff', all: '#888' };
+const COLORS = { primary: '#000', all: '#888', compass: '#0066ff' };
 
 /* ---------- State ---------- */
-let DATA, map, userLat, userLon, initialAlpha = null;
-let compassMarker, routeControl;
-let chain = [], markers = [], allMarkers = [], revealingAll = false;
+let DATA;
+let map;
+let userLat, userLon;
+let compassMarker;
+let routeControl;
+let currentTarget = null;
+let allMarkers = [];
+let revealingAll = false;
 
 /* ---------- Initialization ---------- */
 Promise.all([
   fetch('content.json').then(r => r.json()),
   new Promise(res => {
-    // mock location
+    // use mock location
     userLat = 58.377679;
     userLon = 26.717398;
     res();
@@ -44,43 +47,37 @@ function startPresent() {
   addCompass();
   setupReveal();
   setupRandomize();
-  generateChain(0);
-  updateMarkers();
-  // fit map to initial chain and draw route
-  map.fitBounds(L.featureGroup(markers).getBounds().pad(0.1));
-  drawRoute(chain);
-  updateContentBar();
+  pickAndRender();
   map.on('zoomend', updateContentBar);
-  window.addEventListener('deviceorientation', onOrientation);
 }
 
 /* ---------- Map & Compass ---------- */
 function buildMap() {
-  map = L.map('map',{zoomControl:false,attributionControl:false})
-    .setView([userLat,userLon],14);
+  map = L.map('map', { zoomControl:false, attributionControl:false })
+    .setView([userLat, userLon], 14);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19}).addTo(map);
 }
 function addCompass() {
-  const html = `<div class='compass-icon'><svg width='28' height='28'>`+
+  const html = `<div class='compass-icon'><svg width='28' height='28'>` +
                `<polygon points='14,3 18,19 14,15 10,19' fill='${COLORS.compass}'/></svg></div>`;
-  compassMarker = L.marker([userLat,userLon],{
-    icon:L.divIcon({html,className:'',iconSize:[28,28],iconAnchor:[14,14]})
+  compassMarker = L.marker([userLat, userLon], {
+    icon: L.divIcon({ html, className:'', iconSize:[28,28],iconAnchor:[14,14] })
   }).addTo(map);
 }
 
-/* ---------- Reveal/Hide All Markers ---------- */
+/* ---------- Reveal/Hide All ---------- */
 function setupReveal() {
   allMarkers = DATA.targets.map(t =>
-    L.circleMarker([t.lat,t.lon],{radius:6,color:COLORS.all,weight:1,fillOpacity:1})
+    L.circleMarker([t.lat, t.lon], { radius:6, color:COLORS.all, weight:1, fillOpacity:1 })
   );
   const btn = document.createElement('button');
   btn.textContent = 'Reveal';
-  Object.assign(btn.style,{position:'fixed',bottom:'16px',left:'16px',padding:'8px',background:'red',color:'#fff',border:'none',borderRadius:'4px',zIndex:30,cursor:'pointer'});
+  Object.assign(btn.style, { position:'fixed', bottom:'16px', left:'16px', padding:'8px', background:'red', color:'#fff', border:'none', borderRadius:'4px', zIndex:30, cursor:'pointer' });
   document.body.appendChild(btn);
-  btn.addEventListener('click',()=>{
+  btn.addEventListener('click', () => {
     revealingAll = !revealingAll;
-    allMarkers.forEach(m=>revealingAll?m.addTo(map):m.remove());
-    btn.textContent = revealingAll?'Hide':'Reveal';
+    allMarkers.forEach(m => revealingAll ? m.addTo(map) : m.remove());
+    btn.textContent = revealingAll ? 'Hide' : 'Reveal';
   });
 }
 
@@ -88,119 +85,60 @@ function setupReveal() {
 function setupRandomize() {
   const btn = document.createElement('button');
   btn.textContent = 'Randomize';
-  Object.assign(btn.style,{position:'fixed',bottom:'16px',right:'16px',padding:'8px',background:'red',color:'#fff',border:'none',borderRadius:'4px',zIndex:30,cursor:'pointer'});
+  Object.assign(btn.style, { position:'fixed', bottom:'16px', right:'16px', padding:'8px', background:'red', color:'#fff', border:'none', borderRadius:'4px', zIndex:30, cursor:'pointer' });
   document.body.appendChild(btn);
-  btn.addEventListener('click',()=>{
+  btn.addEventListener('click', () => {
+    // random within 1km
     const R=6371e3, d=Math.random()*1000, brng=Math.random()*2*Math.PI;
     const lat1=toRad(58.377679), lon1=toRad(26.717398);
     const lat2=Math.asin(Math.sin(lat1)*Math.cos(d/R)+Math.cos(lat1)*Math.sin(d/R)*Math.cos(brng));
-    const lon2=lon1+Math.atan2(Math.sin(brng)*Math.sin(d/R)*Math.cos(lat1),Math.cos(d/R)-Math.sin(lat1)*Math.sin(lat2));
+    const lon2=lon1+Math.atan2(Math.sin(brng)*Math.sin(d/R)*Math.cos(lat1), Math.cos(d/R)-Math.sin(lat1)*Math.sin(lat2));
     userLat=lat2*180/Math.PI; userLon=lon2*180/Math.PI;
-    const cmLayer = Object.values(map._layers).find(l=>l.options&&l.options.icon);
-    if(cmLayer) cmLayer.setLatLng([userLat,userLon]);
-    map.setView([userLat,userLon],14);
-    generateChain(initialAlpha||0);
-    updateMarkers();
-    // update route after randomize
-    drawRoute(chain);
-    updateContentBar();
+    compassMarker.setLatLng([userLat, userLon]);
+    map.setView([userLat, userLon],14);
+    pickAndRender();
   });
 }
 
-/* ---------- Chain Generation (closest by route) ---------- */
-function generateChain(heading) {
-  if (!DATA) return;
-  // find closest target by straight-line distance (approximate)
-  const byDist = DATA.targets.map(t => ({
-    ...t,
-    dist: haversine(userLat, userLon, t.lat, t.lon)
-  })).sort((a, b) => a.dist - b.dist);
-  // only closest point
-  chain = [byDist[0]];
-}
+/* ---------- Pick & Render ---------- */
+function pickAndRender() {
+  // clear old
+  if (currentTarget && routeControl) routeControl.setWaypoints([]);
+  map.eachLayer(l => { if (l instanceof L.CircleMarker && !DATA.targets.some(t=>t.lat===l.getLatLng().lat&&t.lon===l.getLatLng().lng)) map.removeLayer(l); });
 
-/* ---------- Markers Update ---------- */
-function updateMarkers() {
-  markers.forEach(m=>m.remove()); markers=[];
-  chain.forEach((t,i)=>{
-    const color=i===0?COLORS.primary:COLORS.chain;
-    const m=L.circleMarker([t.lat,t.lon],{radius:6,color,weight:1,fillOpacity:1})
-      .addTo(map)
-      .on('click',()=>focusOn(i));
-    markers.push(m);
-  });
-}
+  // pick closest by Haversine
+  const closest = DATA.targets.map(t => ({ ...t, dist: haversine(userLat, userLon, t.lat, t.lon) }))
+                     .sort((a,b) => a.dist - b.dist)[0];
+  currentTarget = closest;
 
-/* ---------- Focus & Routing ---------- */
-function focusOn(idx) {
-  const sub=chain.slice(0,idx+1);
-  map.fitBounds(L.featureGroup(sub.map((_,i)=>markers[i])).getBounds().pad(0.1));
-  drawRoute(sub);
-  updateContentBar(sub.length);
-}
-function drawRoute(list) {
-  const waypts = [[userLat, userLon], ...list.map(t => [t.lat, t.lon])];
-  if (routeControl) {
-    routeControl.setWaypoints(waypts);
-  } else {
-    routeControl = L.Routing.control({
-      router: L.Routing.osrmv1({ serviceUrl: 'https://router.project-osrm.org/route/v1' }),
-      waypoints: waypts,
-      lineOptions: { styles: [{ color: '#000', weight: 3 }] },
-      createMarker: () => null,
-      addWaypoints: false,
-      draggableWaypoints: false,
-      fitSelectedRoutes: false,
-      showAlternatives: false,
-      show: false
-    }).addTo(map);
-    document.querySelectorAll('.leaflet-routing-container').forEach(el => el.style.display = 'none');
-  }
-}
-      ),
-      waypoints: waypts,
-      lineOptions: { styles: [{ color: '#000', weight: 3 }] },
-      createMarker: () => null,
-      addWaypoints: false,
-      draggableWaypoints: false,
-      fitSelectedRoutes: false,
-      showAlternatives: false,
-      show: false
-    }).addTo(map);
-    document.querySelectorAll('.leaflet-routing-container').forEach(el => el.style.display = 'none');
-  }
-}
+  // render marker
+  L.circleMarker([closest.lat, closest.lon], { radius:8, color:COLORS.primary, weight:2, fillOpacity:1 }).addTo(map);
 
-/* ---------- Content Bar ---------- */
-function updateContentBar(count = null) {
-  const b = map.getBounds();
-  let vis = chain.filter((t, i) => b.contains([t.lat, t.lon]));
-  if (count != null) vis = chain.slice(0, count);
+  // draw route via OSRM
+  drawRoute([closest]);
+
+  // update content bar
   descBar.innerHTML = '';
-  vis.forEach((t, i) => {
-    const r = document.createElement('div');
-    r.textContent = t.name;
-    Object.assign(r.style, { fontSize: `${20 - i * 2}px`, fontWeight: '500', cursor: 'pointer' });
-    descBar.appendChild(r);
-    if (vis.length === 1) {
-      const d = document.createElement('div');
-      d.textContent = t.desc;
-      d.style.marginTop = '8px';
-      descBar.appendChild(d);
-    }
-  });
-  // ensure content bar is visible
+  const title = document.createElement('div'); title.textContent = closest.name;
+  Object.assign(title.style, { fontSize:'20pt', fontWeight:'500' });
+  descBar.appendChild(title);
+  const desc = document.createElement('div'); desc.textContent = closest.desc; desc.style.marginTop='8px';
+  descBar.appendChild(desc);
   descBar.style.opacity = '1';
 }
-/* ---------- Orientation Handler ---------- */
-function onOrientation({alpha}){
-  if(alpha==null) return;
-  initialAlpha=alpha;
-  const h=norm(alpha);
-  generateChain(h);
-  updateMarkers();
-  updateContentBar();
-  if(compassMarker){compassMarker.getElement().querySelector('svg').style.transform=`rotate(${h}deg)`;}  
+
+/* ---------- Routing ---------- */
+function drawRoute(list) {
+  const waypts = [[userLat, userLon], ...list.map(t=>[t.lat,t.lon])];
+  if (routeControl) routeControl.setWaypoints(waypts);
+  else routeControl = L.Routing.control({
+    router: L.Routing.osrmv1({ serviceUrl:'https://router.project-osrm.org/route/v1' }),
+    waypoints: waypts,
+    lineOptions:{styles:[{color:'#000',weight:3}]},
+    createMarker:()=>null, addWaypoints:false, draggableWaypoints:false,
+    fitSelectedRoutes:false, showAlternatives:false, show:false
+  }).addTo(map);
+  document.querySelectorAll('.leaflet-routing-container').forEach(el=>el.style.display='none');
 }
 
 /* ---------- Math ---------- */
