@@ -22,7 +22,7 @@ body {
   display: flex;
   justify-content: center;
   gap: 12px;
-  background: transparent;
+  background: none;
   z-index: 1000;
 }
 
