@@ -1,5 +1,12 @@
 /* App-wide stylesheet for Heading HUD */
 
+/* Global text styling */
+body {
+  margin: 0;
+  font-family: 'Raleway', sans-serif;
+  color: #000;
+}
+
 /* spinner animation */
 @keyframes spin {
   to { transform: rotate(360deg); }
@@ -15,7 +22,7 @@
   display: flex;
   justify-content: center;
   gap: 12px;
-  background: rgba(255,255,255,0.9);
+  background: transparent;
   z-index: 1000;
 }
 
@@ -98,7 +105,7 @@
 
 /* Tag styles */
 .tag {
-  padding: 4px 12px;
+  padding: 4px 4px;
   border: 1px solid #000;
   border-radius: 12px;
   background: #000;
