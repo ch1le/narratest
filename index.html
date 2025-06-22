@@ -66,15 +66,15 @@
         opacity: 0;
     "></div>
 
-    <!-- Leaflet JS -->
+      <!-- Leaflet core -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <!-- Leaflet Routing Machine -->
     <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.min.js"></script>
-    <!-- OpenRouteService plugin for LRM -->
-    <script src="https://unpkg.com/lrm-openrouteservice@1.4.3/dist/lrm-openrouteservice.min.js"></script>
-
-    <!-- Main app script -->
+    <!-- OpenRouteService plugin for LRM (must come after Routing Machine) -->
+    <script src="https://cdn.jsdelivr.net/npm/lrm-openrouteservice@1.4.3/dist/lrm-openrouteservice.min.js"></script>
+    <!-- Your app code -->
     <script src="app.js"></script>
+
 
     <style>
       @keyframes spin { to { transform: rotate(360deg); } }
