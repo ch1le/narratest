@@ -42,8 +42,15 @@ Promise.all([
 
 enableBtn.addEventListener('click', startPresent);
 function startPresent() {
+  // ensure map container has visible dimensions
+  mapContainer.style.width = '100%';
+  mapContainer.style.height = '50vh';
+
+  permissionBox.remove();
   permissionBox.remove();
   buildMap();
+  // after initializing map, fix size
+  map.invalidateSize();
   addCompass();
   setupReveal();
   setupRandomize();
