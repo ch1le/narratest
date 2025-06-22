@@ -13,6 +13,17 @@ const selectorRow    = $('#selectorRow');
 const descBar        = $('#descBox');
 const mapContainer   = $('#map');
 
+// Tag selector: click toggles selection and re-picks target
+selectorRow.addEventListener('click', e => {
+  if (e.target.classList.contains('tag')) {
+    e.target.classList.toggle('deselected');
+    pickAndRender();
+  }
+});
+
+/* ---------- Constants ---------- */ $('#descBox');
+const mapContainer   = $('#map');
+
 /* ---------- Constants ---------- */
 const COLORS = {
   primary: '#000',
