@@ -107,21 +107,16 @@ function setupRandomize() {
   });
 }
 
-/* ---------- Chain Generation ---------- */
+/* ---------- Chain Generation (closest by route) ---------- */
 function generateChain(heading) {
-  if(!DATA) return;
-  // 1. primary by distance
-  const byDist = DATA.targets.map(t=>({...t,dist:haversine(userLat,userLon,t.lat,t.lon)}))
-                    .sort((a,b)=>a.dist-b.dist);
-  const primary = byDist[0];
-  // 2. vector bearing
-  const vec = bearing(userLat,userLon,primary.lat,primary.lon);
-  // 3. two continuing points
-  const sec = DATA.targets.filter(t=>t.name!==primary.name)
-    .map(t=>({...t,bear:bearing(primary.lat,primary.lon,t.lat,t.lon),dist:haversine(primary.lat,primary.lon,t.lat,t.lon)}))
-    .sort((a,b)=>Math.abs(shortest(a.bear,vec))-Math.abs(shortest(b.bear,vec))||a.dist-b.dist)
-    .slice(0,2);
-  chain = [primary,...sec];
+  if (!DATA) return;
+  // find closest target by straight-line distance (approximate)
+  const byDist = DATA.targets.map(t => ({
+    ...t,
+    dist: haversine(userLat, userLon, t.lat, t.lon)
+  })).sort((a, b) => a.dist - b.dist);
+  // only closest point
+  chain = [byDist[0]];
 }
 
 /* ---------- Markers Update ---------- */
@@ -144,12 +139,28 @@ function focusOn(idx) {
   updateContentBar(sub.length);
 }
 function drawRoute(list) {
-  const w=[[userLat,userLon],...list.map(t=>[t.lat,t.lon])];
-  if(routeControl) routeControl.setWaypoints(w);
-  else{
-    routeControl=L.Routing.control({router:L.Routing.osrmv1({serviceUrl:'https://router.project-osrm.org/route/v1'}),waypoints:w,lineOptions:{styles:[{color:'#000',weight:3}]},createMarker:()=>null,addWaypoints:false,draggableWaypoints:false,fitSelectedRoutes:false,showAlternatives:false,show:false}).addTo(map);
-    document.querySelectorAll('.leaflet-routing-container').forEach(el=>el.style.display='none');
+  const waypts = [[userLat, userLon], ...list.map(t => [t.lat, t.lon])];
+  if (routeControl) {
+    routeControl.setWaypoints(waypts);
+  } else {
+    // use OpenRouteService walking profile
+    routeControl = L.Routing.control({
+      router: L.Routing.openrouteservice(
+        "5b3ce3597851110001cf624832d9077792624247bec931918dc4e43b", // ORS API key
+        { profile: "foot-walking" }
+      ),
+      waypoints: waypts,
+      lineOptions: { styles: [{ color: '#000', weight: 3 }] },
+      createMarker: () => null,
+      addWaypoints: false,
+      draggableWaypoints: false,
+      fitSelectedRoutes: false,
+      showAlternatives: false,
+      show: false
+    }).addTo(map);
+    document.querySelectorAll('.leaflet-routing-container').forEach(el => el.style.display = 'none');
   }
+}
 }
 
 /* ---------- Content Bar ---------- */
