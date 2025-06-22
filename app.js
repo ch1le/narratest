@@ -143,11 +143,20 @@ function drawRoute(list) {
   if (routeControl) {
     routeControl.setWaypoints(waypts);
   } else {
-    // use OpenRouteService walking profile
     routeControl = L.Routing.control({
-      router: L.Routing.openrouteservice(
-        "5b3ce3597851110001cf624832d9077792624247bec931918dc4e43b", // ORS API key
-        { profile: "foot-walking" }
+      router: L.Routing.osrmv1({ serviceUrl: 'https://router.project-osrm.org/route/v1' }),
+      waypoints: waypts,
+      lineOptions: { styles: [{ color: '#000', weight: 3 }] },
+      createMarker: () => null,
+      addWaypoints: false,
+      draggableWaypoints: false,
+      fitSelectedRoutes: false,
+      showAlternatives: false,
+      show: false
+    }).addTo(map);
+    document.querySelectorAll('.leaflet-routing-container').forEach(el => el.style.display = 'none');
+  }
+}
       ),
       waypoints: waypts,
       lineOptions: { styles: [{ color: '#000', weight: 3 }] },
