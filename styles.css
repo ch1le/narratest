@@ -1,218 +1,113 @@
-/* ---------- Global ---------- */
-html,
-body {
-  margin: 0;
-  height: 100%;
-  background: #fff;
-  font-family: "Raleway", system-ui, sans-serif;
+/* App-wide stylesheet for Heading HUD */
+
+/* spinner animation */
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
-/* ---------- Tag selector row ---------- */
+/* Selector tags always on top */
 #selectorRow {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  padding: 8px 0;
+  padding: 8px;
   display: flex;
   justify-content: center;
   gap: 12px;
-  background: #fff;
-  z-index: 15;
+  background: rgba(255,255,255,0.9);
+  z-index: 1000;
 }
 
-.tag {
-  padding: 2px 10px;
-  border: 1px solid #000;
-  border-radius: 12px;
-  font-size: 12px;
-  cursor: pointer;
-  user-select: none;
-  transition: all 0.2s ease;
-  background: #000; /* default = selected  */
-  color: #fff;
-}
-
-.tag.deselected {
-  background: #fff;
-  color: #000;
-}
-
-/* ---------- Header ---------- */
-#headerBar {
-  position: fixed;
-  top: 48px; /* below selector row */
-  left: 16px;
-  right: 16px;
+/* Wrapper for map and HUD layers */
+#content-wrapper {
+  position: relative;
   display: flex;
-flex-direction: column;
-  align-items: flex-start; /* so things line up to the left */;
+  flex-direction: column;
+  z-index: 100;
+}
+
+/* Map styling */
+#map {
+  width: 100%;
+  height: 50vh;
   z-index: 10;
 }
 
-#titleTag {
-  margin-top: 4px; /* spacing between the title row and the tag */
+/* Shared absolute elements */
+#permissionBox,
+#bookmark,
+#loader {
+  position: absolute;
+  z-index: 20;
 }
 
-/* title widget */
-#titleWidget {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  max-width: 70%;
+/* Permission prompt */
+#permissionBox {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
+#permissionBox button {
+  margin-top: 12px;
+  padding: 8px 16px;
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Bookmark icon */
 #bookmark {
+  top: 16px;
+  right: 16px;
+  display: none;
   width: 24px;
   height: 24px;
-  fill: #000;
-  display: none;
+  cursor: pointer;
 }
 
-#titleText {
-  font-size: 20pt;
-  font-weight: 500;
-  white-space: nowrap;
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* loader spinner */
+/* Loader spinner */
 #loader {
   width: 24px;
   height: 24px;
   border: 3px solid #ccc;
   border-top-color: #000;
   border-radius: 50%;
-  display: none;
   animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* description box */
-#descBox {
-  position: fixed;
-  top: calc(48px + 90px);
+  display: none;
+  top: 16px;
   left: 16px;
-  right: 16px;
-  font-size: 20px;
-  line-height: 28px;
+}
+
+/* Content bar below map */
+#descBox {
+  flex: 1;
+  background: rgba(255,255,255,0.95);
+  padding: 16px;
+  overflow-y: auto;
   opacity: 0;
-  transition: opacity 0.4s ease;
-  max-height: 60vh;
-  overflow: auto;
+  transition: opacity 0.3s ease;
+  z-index: 10;
 }
 
-/* ---------- Cross HUD ---------- */
-#crossHUD {
-  position: relative;
-  width: 70px;
-  height: 70px;
-  margin-left: auto;
-}
-
-.arrow {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 46px;
-  height: 6px;
-  background: #000;
-  border-radius: 3px;
-  transform-origin: center center;
-  display: flex;
-  align-items: center;
-}
-
-.arrow::after {
-  content: "";
-  position: absolute;
-  right: -8px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 0;
-  height: 0;
-  border: 4px solid transparent;
-  border-left-color: #000;
-}
-
-#activeVert {
-  background: #ff3b3b;
-}
-
-#activeVert::after {
-  border-left-color: #ff3b3b;
-}
-
-/* overshoot animation for object arrow */
-@keyframes objSpin {
-  0% {
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-  70% {
-    transform: translate(-50%, -50%) rotate(-95deg);
-  }
-  100% {
-    transform: translate(-50%, -50%) rotate(-75deg);
-  }
-}
-
-.animateObj {
-  animation: objSpin 0.9s cubic-bezier(0.36, 1.6, 0.6, 1) forwards;
-}
-
-/* ---------- Permission prompt ---------- */
-#permissionBox {
-  position: fixed;
-  top: 60%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 230px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 18px;
-  z-index: 20;
-}
-
-#permissionText {
-  text-align: center;
-  font-size: 14px;
-  line-height: 24px;
-}
-
-#enable {
-  padding: 10px 18px;
-  font-size: 16px;
-  border: none;
-  border-radius: 6px;
+/* Tag styles */
+.tag {
+  padding: 4px 12px;
+  border: 1px solid #000;
+  border-radius: 12px;
   background: #000;
   color: #fff;
   cursor: pointer;
-}
-.compass-icon svg {
-  overflow: visible;
-  transform-origin: 14px 14px; /* center */
-  transition: transform 0.15s linear;
-}
-@keyframes bounce {
-  0%, 100% { transform: scale(1); }
-  50%      { transform: scale(1.04); }
+  user-select: none;
 }
 
-.active-marker {
-  animation: bounce 0.6s ease-in-out infinite;
-  transform-origin: center center;
-}
-/* push the title/bookmark bar down to sit just above the description */
-#headerBar {
-  /* instead of a fixed pixel top, position relative to the 50vh map */
-  top: calc(50vh + 0px - 60px); /* 8px is the descBox gap; 40px is approx headerBar height */
+.tag.deselected {
+  background: #fff;
+  color: #000;
 }
