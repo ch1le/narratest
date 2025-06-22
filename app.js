@@ -192,7 +192,7 @@ function pickAndRender() {
 }
 
 /* ---------- Routing via OSRM ---------- */
-function drawRoute(list) {(list) {
+function drawRoute(list) {
   const waypts = [[userLat,userLon], ...list.map(t=>[t.lat,t.lon])];
   if (routeControl) routeControl.setWaypoints(waypts);
   else {
