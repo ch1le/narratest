@@ -24,10 +24,95 @@
 
     <!-- App-wide stylesheet -->
     <link rel="stylesheet" href="styles.css" />
+    <style>
+      /* spinner */
+      @keyframes spin { to { transform: rotate(360deg); } }
+      /* selector tags always on top */
+      #selectorRow {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 8px;
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        background: rgba(255,255,255,0.9);
+        z-index: 1000;
+      }
+      /* wrapper for map and HUD layers */
+      #content-wrapper {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        z-index: 100;
+      }
+      #map {
+        width: 100%;
+        height: 50vh;
+        z-index: 10;
+      }
+      #permissionBox, #bookmark, #loader {
+        position: absolute;
+        z-index: 20;
+      }
+      #permissionBox {
+        top: 50%; left: 50%; transform: translate(-50%, -50%);
+        background: #fff;
+        padding: 16px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      }
+      #permissionBox button {
+        margin-top: 12px;
+        padding: 8px 16px;
+        background: #000;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      #bookmark {
+        top: 16px;
+        right: 16px;
+        display: none;
+        cursor: pointer;
+      }
+      #loader {
+        width: 24px; height: 24px;
+        border: 3px solid #ccc;
+        border-top-color: #000;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        display: none;
+        top: 16px;
+        left: 16px;
+      }
+      #descBox {
+        flex: 1;
+        background: rgba(255,255,255,0.95);
+        padding: 16px;
+        overflow-y: auto;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 10;
+      }
+      .tag {
+        padding: 4px 12px;
+        border: 1px solid #000;
+        border-radius: 12px;
+        background: #000;
+        color: #fff;
+        cursor: pointer;
+      }
+      .tag.deselected {
+        background: #fff;
+        color: #000;
+      }
+    </style>
   </head>
 
   <body>
-    <!-- Tag selector row -->
+    <!-- Selector Tags -->
     <div id="selectorRow">
       <span class="tag" data-tag="artworks">Artworks</span>
       <span class="tag" data-tag="museums">Museums</span>
@@ -36,48 +121,34 @@
       <span class="tag" data-tag="live">Live</span>
     </div>
 
-    <!-- Map container -->
-    <div id="map"></div>
+    <!-- Main HUD Stack -->
+    <div id="content-wrapper">
+      <div id="map"></div>
 
-    <!-- Permission prompt -->
-    <div id="permissionBox">
-      <div id="permissionText"></div>
-      <button id="enable">Enable Location</button>
+      <div id="permissionBox">
+        <div id="permissionText"></div>
+        <button id="enable">Enable Location</button>
+      </div>
+
+      <svg
+        id="bookmark"
+        viewBox="0 0 24 24"
+        width="24"
+        height="24"
+      >
+        <path d="M6 2a2 2 0 0 0-2 2v18l8-5.333L20 22V4a2 2 0 0 0-2-2H6z" />
+      </svg>
+
+      <div id="loader"></div>
+
+      <div id="descBox"></div>
     </div>
 
-    <!-- Bookmark icon (shown after permission) -->
-    <svg
-      id="bookmark"
-      viewBox="0 0 24 24"
-      width="24"
-      height="24"
-      style="display: none; position: fixed; top: 16px; right: 16px; z-index: 20; cursor: pointer;"
-    >
-      <path d="M6 2a2 2 0 0 0-2 2v18l8-5.333L20 22V4a2 2 0 0 0-2-2H6z" />
-    </svg>
-
-    <!-- Loader spinner (hidden by default) -->
-    <div id="loader" style="display:none; position: fixed; top: 16px; left: 16px; z-index: 20;
-         width:24px; height:24px; border:3px solid #ccc; border-top-color:#000; border-radius:50%; animation: spin 0.8s linear infinite;
-    "></div>
-
-    <!-- Content bar below map -->
-    <div id="descBox" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.9); padding: 16px; height: 30vh; overflow-y: auto;
-        opacity: 0;
-    "></div>
-
-      <!-- Leaflet core -->
+    <!-- Leaflet core -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <!-- Leaflet Routing Machine -->
+    <!-- Routing Machine -->
     <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.min.js"></script>
-    <!-- OpenRouteService plugin for LRM (must come after Routing Machine) -->
-    <script src="https://cdn.jsdelivr.net/npm/lrm-openrouteservice@1.4.3/dist/lrm-openrouteservice.min.js"></script>
-    <!-- Your app code -->
+    <!-- App script -->
     <script src="app.js"></script>
-
-
-    <style>
-      @keyframes spin { to { transform: rotate(360deg); } }
-    </style>
   </body>
 </html>
