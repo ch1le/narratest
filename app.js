@@ -27,6 +27,7 @@ let userLat, userLon;
 let compassMarker;
 let routeControl;
 let currentTarget = null;
+let currentMarker = null;
 let allMarkers = [];
 let revealingAll = false;
 
@@ -124,33 +125,45 @@ function setupRandomize() {
 function pickAndRender() {
   // clear old route
   if (routeControl) routeControl.setWaypoints([]);
-  // remove existing single marker if any
-  if (currentTarget) {
-    // not tracked, so skip
+  // remove existing marker
+  if (currentMarker) {
+    currentMarker.remove();
+    currentMarker = null;
   }
 
-  // find closest
-  const closest = DATA.targets.map(t => ({ ...t, dist: haversine(userLat, userLon, t.lat, t.lon) }))
-    .sort((a,b) => a.dist - b.dist)[0];
+  // filter by selected tags
+  const selTags = Array.from(document.querySelectorAll('.tag'))
+    .filter(el => !el.classList.contains('deselected'))
+    .map(el => el.dataset.tag);
+  let candidates = DATA.targets;
+  if (selTags.length) {
+    const filtered = DATA.targets.filter(t => selTags.includes(t.tag));
+    if (filtered.length) candidates = filtered;
+  }
+
+  // find closest by distance
+  const closest = candidates
+    .map(t => ({ ...t, dist: haversine(userLat, userLon, t.lat, t.lon) }))
+    .sort((a, b) => a.dist - b.dist)[0];
   currentTarget = closest;
 
-  // render marker
-  L.circleMarker([closest.lat, closest.lon], {
+  // render marker and keep reference
+  currentMarker = L.circleMarker([closest.lat, closest.lon], {
     radius: 8, color: COLORS.primary, weight: 2, fillOpacity: 1
   }).addTo(map);
 
-  // route
+  // route to it
   drawRoute([closest]);
 
-  // content bar with titleRow
+  // build content bar
   descBar.innerHTML = '';
   const row = document.createElement('div');
   row.className = 'titleRow';
 
-  const tag = document.createElement('span');
-  tag.className = 'tag';
-  tag.textContent = closest.tag;
-  row.appendChild(tag);
+  const tagEl = document.createElement('span');
+  tagEl.className = 'tag';
+  tagEl.textContent = closest.tag;
+  row.appendChild(tagEl);
 
   const headline = document.createElement('div');
   headline.className = 'title-text';
@@ -179,7 +192,7 @@ function pickAndRender() {
 }
 
 /* ---------- Routing via OSRM ---------- */
-function drawRoute(list) {
+function drawRoute(list) {(list) {
   const waypts = [[userLat,userLon], ...list.map(t=>[t.lat,t.lon])];
   if (routeControl) routeControl.setWaypoints(waypts);
   else {
