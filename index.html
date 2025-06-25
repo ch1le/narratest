@@ -1,154 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Heading HUD – Map First</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Heading HUD – Map First</title>
 
-    <!-- Google Font -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
+  <!-- Google Font -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500&display=swap"
+    rel="stylesheet"
+  />
 
-    <!-- Leaflet CSS -->
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    />
-    <!-- Leaflet Routing Machine CSS -->
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css"
-    />
+  <!-- Leaflet CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+  <!-- Leaflet Routing Machine CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css"
+  />
 
-    <!-- App-wide stylesheet -->
-    <link rel="stylesheet" href="styles.css" />
-    <style>
-      /* spinner */
-      @keyframes spin { to { transform: rotate(360deg); } }
-      /* selector tags always on top */
-      #selectorRow {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        padding: 8px;
-        display: flex;
-        justify-content: center;
-        gap: 12px;
-        background: rgba(255,255,255,0.9);
-        z-index: 1000;
-      }
-      /* wrapper for map and HUD layers */
-      #content-wrapper {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        z-index: 100;
-      }
-      #map {
-        width: 100%;
-        height: 50vh;
-        z-index: 10;
-      }
-      #permissionBox, #bookmark, #loader {
-        position: absolute;
-        z-index: 20;
-      }
-      #permissionBox {
-        top: 50%; left: 50%; transform: translate(-50%, -50%);
-        background: #fff;
-        padding: 16px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      }
-      #permissionBox button {
-        margin-top: 12px;
-        padding: 8px 16px;
-        background: #000;
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-      }
-      #bookmark {
-        top: 16px;
-        right: 16px;
-        display: none;
-        cursor: pointer;
-      }
-      #loader {
-        width: 24px; height: 24px;
-        border: 3px solid #ccc;
-        border-top-color: #000;
-        border-radius: 50%;
-        animation: spin 0.8s linear infinite;
-        display: none;
-        top: 16px;
-        left: 16px;
-      }
-      #descBox {
-        flex: 1;
-        background: rgba(255,255,255,0.95);
-        padding: 16px;
-        overflow-y: auto;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        z-index: 10;
-      }
-      .tag {
-        padding: 4px 12px;
-        border: 1px solid #000;
-        border-radius: 12px;
-        background: #000;
-        color: #fff;
-        cursor: pointer;
-      }
-      .tag.deselected {
-        background: #fff;
-        color: #000;
-      }
-    </style>
-  </head>
+  <!-- App-wide stylesheet -->
+  <link rel="stylesheet" href="styles.css" />
 
-  <body>
-    <!-- Selector Tags -->
-    <div id="selectorRow">
-      <span class="tag" data-tag="artworks">Artworks</span>
-      <span class="tag" data-tag="museums">Museums</span>
-      <span class="tag" data-tag="bars">Bars</span>
-      <span class="tag" data-tag="architecture">Architecture</span>
-      <span class="tag" data-tag="live">Live</span>
-    </div>
+  <!-- Small inline overrides -->
+  <style>
+    /* orange target dots */
+    .dot {
+      z-index: 2;
+      width: 8px;
+      height: 8px;
+      background: #ff9500;
+      border-radius: 50%;
+    }
 
-    <!-- Main HUD Stack -->
-    <div id="content-wrapper">
-      <div id="map"></div>
+    /* bookmark icon */
+    #bookmark {
+      cursor: pointer;
+      pointer-events: auto;
+    }
+    #bookmark path {
+      fill: none;
+      stroke: #000;
+      stroke-width: 2;
+    }
+    #bookmark.bookmark-selected path {
+      fill: #000;
+      stroke: #000;
+    }
 
-      <div id="permissionBox">
-        <div id="permissionText"></div>
-        <button id="enable">Enable Location</button>
-      </div>
+    /* 50 vh map rectangle */
+    #map {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 50vh;
+      z-index: 4;
+    }
 
-      <svg
-        id="bookmark"
-        viewBox="0 0 24 24"
-        width="24"
-        height="24"
-      >
+    /* tag row overlays map */
+    #selectorRow {
+      background: transparent;
+    }
+
+    /* description block sits just under the map */
+    #descBox {
+      position: absolute;
+      top: calc(50vh + 8px);
+      left: 16px;
+      right: 16px;
+      pointer-events: auto;
+    }
+  </style>
+</head>
+<body>
+  <!-- Tag selector row -->
+  <div id="selectorRow">
+    <span class="tag" data-tag="artworks">Artworks</span>
+    <span class="tag" data-tag="museums">Museums</span>
+    <span class="tag" data-tag="bars">Bars</span>
+    <span class="tag" data-tag="architecture">Architecture</span>
+    <span class="tag" data-tag="live">Live</span>
+  </div>
+
+  <!-- Leaflet map -->
+  <div id="map"></div>
+
+  <!-- Permission prompt -->
+  <div id="permissionBox">
+    <div id="permissionText"></div>
+    <button id="enable">Enable Location</button>
+  </div>
+
+  <!-- Header with title + bookmark (will be removed at start) -->
+  <div id="headerBar">
+    <div id="titleWidget">
+      <div id="loader"></div>
+      <svg id="bookmark" viewBox="0 0 24 24">
         <path d="M6 2a2 2 0 0 0-2 2v18l8-5.333L20 22V4a2 2 0 0 0-2-2H6z" />
       </svg>
-
-      <div id="loader"></div>
-
-      <div id="descBox"></div>
+      <span id="titleText"></span>
     </div>
+  </div>
 
-    <!-- Leaflet core -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <!-- Routing Machine -->
-    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.min.js"></script>
-    <!-- App script -->
-    <script src="app.js"></script>
-  </body>
+  <!-- Description -->
+  <div id="descBox"></div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- Leaflet Routing Machine JS -->
+  <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.min.js"></script>
+
+  <!-- Main logic -->
+  <script src="app.js"></script>
+
+  <!-- Tiny inline handler for bookmark toggle (cloned in app.js) -->
+  <script>
+    const bm = document.getElementById("bookmark");
+    if (bm) bm.addEventListener("click", () =>
+      bm.classList.toggle("bookmark-selected")
+    );
+  </script>
+</body>
 </html>
